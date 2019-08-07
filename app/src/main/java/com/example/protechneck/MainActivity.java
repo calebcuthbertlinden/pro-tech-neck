@@ -16,17 +16,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor gyroscope;
     private Sensor magneticField;
 
-    private final float[] accelerometerReading = new float[3];
-    private final float[] magnetometerReading = new float[3];
+    private float[] accelerometerReading = new float[3];
+    private float[] magnetometerReading = new float[3];
 
-    private final float[] rotationMatrix = new float[9];
-    private final float[] orientationAngles = new float[3];
+    private float[] rotationMatrix = new float[9];
+    private float[] orientationAngles = new float[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initSensors();
+    }
 
+    private void initSensors() {
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
@@ -39,25 +42,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     protected void onResume() {
         super.onResume();
-        if (accelerometer != null) {
-            sensorManager.registerListener(this, accelerometer,
-                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
-        }
-
-        if (gyroscope != null) {
-            sensorManager.registerListener(this, gyroscope,
-                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
-        }
-
-        if (magneticField != null) {
-            sensorManager.registerListener(this, magneticField,
-                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
-        }
+        validateAndRegisterListener(accelerometer, Sensor.TYPE_ACCELEROMETER);
+        validateAndRegisterListener(gyroscope, Sensor.TYPE_GYROSCOPE);
+        validateAndRegisterListener(magneticField, Sensor.TYPE_MAGNETIC_FIELD);
     }
 
-    protected void onPause() {
-        super.onPause();
-//        sensorManager.unregisterListener(this);
+    protected void onStop() {
+        super.onStop();
+        sensorManager.unregisterListener(this);
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -65,13 +57,49 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            System.arraycopy(event.values, 0, accelerometerReading,
-                    0, accelerometerReading.length);
-        } else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-            System.arraycopy(event.values, 0, magnetometerReading,
-                    0, magnetometerReading.length);
+
+        switch (event.sensor.getType()) {
+            case Sensor.TYPE_ACCELEROMETER:
+                accelerometerReading = event.values.clone();
+                break;
+            case Sensor.TYPE_MAGNETIC_FIELD:
+                magnetometerReading = event.values.clone();
+                break;
+            default:
+                return;
         }
-        Log.e("MainActivity", "onSensorChanged: " + event);
+
+        float[] rotationMatrix = new float[9];
+        boolean rotationOK = SensorManager.getRotationMatrix(rotationMatrix,
+                null, accelerometerReading, magnetometerReading);
+
+        float[] orientationValues = new float[3];
+        if (rotationOK) {
+            SensorManager.getOrientation(rotationMatrix, orientationValues);
+        }
+
+        float azimuth = orientationValues[0];
+        float pitch = orientationValues[1];
+        float roll = orientationValues[2];
     }
+
+    private void validateAndRegisterListener(Sensor sensor, int type) {
+        if (sensor != null) {
+            sensorManager.registerListener(this, sensor,
+                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
+        } else {
+            switch (type) {
+                case Sensor.TYPE_ACCELEROMETER:
+                    Log.e("", "No Accelerometer available on this device");
+                    break;
+                case Sensor.TYPE_GYROSCOPE:
+                    Log.e("", "No Gyroscope available on this device");
+                    break;
+                case Sensor.TYPE_MAGNETIC_FIELD:
+                    Log.e("", "No [*] available on this device");
+                    break;
+            }
+        }
+    }
+
 }
