@@ -7,29 +7,44 @@ import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
+
+import java.util.logging.Logger;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
-    // Interface for interacting with the hardware
     private SensorManager sensorManager;
     private Sensor accelerometer;
-    private Sensor gyroscope;
     private Sensor magneticField;
 
-    private final float[] accelerometerReading = new float[3];
-    private final float[] magnetometerReading = new float[3];
+    private float[] accelerometerReading = new float[3];
+    private float[] magnetometerReading = new float[3];
+    private float[] rotationMatrix = new float[9];
+    private float[] orientationAngles = new float[3];
 
-    private final float[] rotationMatrix = new float[9];
-    private final float[] orientationAngles = new float[3];
+    private TextView mTextSensorAzimuth;
+    private TextView mTextSensorPitch;
+    private TextView mTextSensorRoll;
+    private TextView postureType;
+
+    private boolean isOccupied = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        mTextSensorAzimuth = findViewById(R.id.value_azimuth);
+        mTextSensorPitch = findViewById(R.id.value_pitch);
+        mTextSensorRoll = findViewById(R.id.value_roll);
+        postureType = findViewById(R.id.posture_type);
+
+        initSensors();
+    }
+
+    private void initSensors() {
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         SensorManager.getRotationMatrix(rotationMatrix, null,
@@ -39,39 +54,121 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     protected void onResume() {
         super.onResume();
-        if (accelerometer != null) {
-            sensorManager.registerListener(this, accelerometer,
-                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
-        }
-
-        if (gyroscope != null) {
-            sensorManager.registerListener(this, gyroscope,
-                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
-        }
-
-        if (magneticField != null) {
-            sensorManager.registerListener(this, magneticField,
-                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
-        }
+        validateAndRegisterListener(accelerometer, Sensor.TYPE_ACCELEROMETER);
+        validateAndRegisterListener(magneticField, Sensor.TYPE_MAGNETIC_FIELD);
     }
 
-    protected void onPause() {
-        super.onPause();
-//        sensorManager.unregisterListener(this);
+    protected void onStop() {
+        super.onStop();
+        sensorManager.unregisterListener(this);
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         Log.e("MainActivity", "onAccuracyChanged: " + accuracy);
     }
 
+    /**
+     *
+     * @param event
+     */
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            System.arraycopy(event.values, 0, accelerometerReading,
-                    0, accelerometerReading.length);
-        } else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-            System.arraycopy(event.values, 0, magnetometerReading,
-                    0, magnetometerReading.length);
+        switch (event.sensor.getType()) {
+            case Sensor.TYPE_ACCELEROMETER:
+                accelerometerReading = SensorUtil.getSensorEvent(event);
+                break;
+            case Sensor.TYPE_MAGNETIC_FIELD:
+                magnetometerReading = SensorUtil.getSensorEvent(event);
+                break;
+            default:
+                return;
         }
-        Log.e("MainActivity", "onSensorChanged: " + event);
+
+        float[] rotationMatrix = new float[9];
+        boolean rotationOK = SensorManager.getRotationMatrix(rotationMatrix,
+                null, accelerometerReading, magnetometerReading);
+
+        float[] orientationValues = new float[3];
+        if (rotationOK) {
+            SensorManager.getOrientation(rotationMatrix, orientationValues);
+        }
+
+        determineAction(orientationValues[0], orientationValues[1], orientationValues[2]);
+    }
+
+    /**
+     *
+     * @param sensor
+     * @param type
+     */
+    private void validateAndRegisterListener(Sensor sensor, int type) {
+        if (sensor != null) {
+            sensorManager.registerListener(this, sensor,
+                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
+        } else {
+            SensorUtil.logUnavailableSensor(type);
+        }
+    }
+
+    /**
+     *
+     * @param azimuth
+     * @param pitch
+     * @param roll
+     */
+    private void determineAction(float azimuth, float pitch, float roll) {
+        // TODO remove this, once values recorded
+        displayValues(azimuth, pitch, roll);
+
+        if (!isOccupied) {
+            PostureEventType viewType = SensorUtil.determineViewType(azimuth, pitch, roll);
+            switch (viewType) {
+                case FLAT_PHONE:
+                    // Bad posture
+                    AnalyticsUtil.sendAnalyticsEvent(PostureAnalyticsEvent.BAD_POSTURE, null, null);
+                    Log.e("Posture", "BAD_POSTURE - FLAT PHONE");
+                    postureType.setText("BAD POSTURE");
+                    isOccupied = false;
+                    break;
+                case LOW_ANGLED:
+                    // Bad posture
+                    AnalyticsUtil.sendAnalyticsEvent(PostureAnalyticsEvent.BAD_POSTURE, null, null);
+                    Log.e("Posture", "BAD_POSTURE - LOW ANGLED");
+                    postureType.setText("BAD POSTURE");
+                    isOccupied = false;
+                    break;
+                case HIGH_ANGLED:
+                    // Okay posture
+                    AnalyticsUtil.sendAnalyticsEvent(PostureAnalyticsEvent.OKAY_POSTURE, null, null);
+                    Log.e("Posture", "OKAY_POSTURE - HIGH ANGLE");
+                    postureType.setText("BETTER POSTURE");
+                    isOccupied = false;
+                    break;
+                case PERFECT_POSTURE:
+                    // Perfect posture
+                    AnalyticsUtil.sendAnalyticsEvent(PostureAnalyticsEvent.PERFECT_POSTURE, null, null);
+                    Log.e("Posture", "BEST_POSTURE - PERFECT POSTURE");
+                    postureType.setText("PERFECT POSTURE");
+                    isOccupied = false;
+                    break;
+                default:
+                    break;
+            }
+            isOccupied = false;
+        }
+    }
+
+    /**
+     *
+     * @param azimuth
+     * @param pitch
+     * @param roll
+     */
+    private void displayValues(float azimuth, float pitch, float roll) {
+        mTextSensorAzimuth.setText(getResources().getString(
+                R.string.value_format, azimuth));
+        mTextSensorPitch.setText(getResources().getString(
+                R.string.value_format, pitch));
+        mTextSensorRoll.setText(getResources().getString(
+                R.string.value_format, roll));
     }
 }
