@@ -16,8 +16,21 @@ public class SensorUtil {
      * @return
      */
     static PostureEventType determineViewType(float azimuth, float pitch, float roll) {
-        // TODO
-        return PostureEventType.LOW_ANGLED;
+        if (azimuth > PostureEventType.FLAT_PHONE.azimuthLower && azimuth < PostureEventType.FLAT_PHONE.azimuthUpper
+                && pitch > PostureEventType.FLAT_PHONE.pitchLower && pitch < PostureEventType.FLAT_PHONE.pitchUpper
+                && roll > PostureEventType.FLAT_PHONE.rollLower && roll < PostureEventType.FLAT_PHONE.rollUpper) {
+            return PostureEventType.FLAT_PHONE;
+        } else if (azimuth > PostureEventType.LOW_ANGLED.azimuthLower && azimuth < PostureEventType.LOW_ANGLED.azimuthUpper
+                && pitch > PostureEventType.LOW_ANGLED.pitchLower && pitch < PostureEventType.LOW_ANGLED.pitchUpper
+                && roll > PostureEventType.LOW_ANGLED.rollLower && roll < PostureEventType.LOW_ANGLED.rollUpper) {
+            return PostureEventType.LOW_ANGLED;
+        } else if (azimuth > PostureEventType.PERFECT_POSTURE.azimuthLower && azimuth < PostureEventType.PERFECT_POSTURE.azimuthUpper
+                && pitch > PostureEventType.PERFECT_POSTURE.pitchLower && pitch < PostureEventType.PERFECT_POSTURE.pitchUpper
+                && roll > PostureEventType.PERFECT_POSTURE.rollLower && roll < PostureEventType.PERFECT_POSTURE.rollUpper) {
+            return PostureEventType.PERFECT_POSTURE;
+        } else {
+            return PostureEventType.NA;
+        }
     }
 
     /**

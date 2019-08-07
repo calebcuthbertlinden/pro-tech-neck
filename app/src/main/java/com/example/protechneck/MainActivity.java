@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import java.util.logging.Logger;
+
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     private SensorManager sensorManager;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private TextView mTextSensorAzimuth;
     private TextView mTextSensorPitch;
     private TextView mTextSensorRoll;
+    private TextView postureType;
 
     private boolean isOccupied = false;
 
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mTextSensorAzimuth = findViewById(R.id.value_azimuth);
         mTextSensorPitch = findViewById(R.id.value_pitch);
         mTextSensorRoll = findViewById(R.id.value_roll);
+        postureType = findViewById(R.id.posture_type);
 
         initSensors();
     }
@@ -88,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             SensorManager.getOrientation(rotationMatrix, orientationValues);
         }
 
-        // TODO remove this, once values recorded
         determineAction(orientationValues[0], orientationValues[1], orientationValues[2]);
     }
 
@@ -113,30 +116,44 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
      * @param roll
      */
     private void determineAction(float azimuth, float pitch, float roll) {
+        // TODO remove this, once values recorded
         displayValues(azimuth, pitch, roll);
+
         if (!isOccupied) {
             PostureEventType viewType = SensorUtil.determineViewType(azimuth, pitch, roll);
             switch (viewType) {
                 case FLAT_PHONE:
                     // Bad posture
                     AnalyticsUtil.sendAnalyticsEvent(PostureAnalyticsEvent.BAD_POSTURE, null, null);
+                    Log.e("Posture", "BAD_POSTURE - FLAT PHONE");
+                    postureType.setText("BAD POSTURE");
+                    isOccupied = false;
                     break;
                 case LOW_ANGLED:
                     // Bad posture
                     AnalyticsUtil.sendAnalyticsEvent(PostureAnalyticsEvent.BAD_POSTURE, null, null);
+                    Log.e("Posture", "BAD_POSTURE - LOW ANGLED");
+                    postureType.setText("BAD POSTURE");
+                    isOccupied = false;
                     break;
                 case HIGH_ANGLED:
                     // Okay posture
                     AnalyticsUtil.sendAnalyticsEvent(PostureAnalyticsEvent.OKAY_POSTURE, null, null);
+                    Log.e("Posture", "OKAY_POSTURE - HIGH ANGLE");
+                    postureType.setText("BETTER POSTURE");
+                    isOccupied = false;
                     break;
                 case PERFECT_POSTURE:
                     // Perfect posture
                     AnalyticsUtil.sendAnalyticsEvent(PostureAnalyticsEvent.PERFECT_POSTURE, null, null);
+                    Log.e("Posture", "BEST_POSTURE - PERFECT POSTURE");
+                    postureType.setText("PERFECT POSTURE");
+                    isOccupied = false;
                     break;
                 default:
                     break;
             }
-            isOccupied = true;
+            isOccupied = false;
         }
     }
 
@@ -154,8 +171,4 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mTextSensorRoll.setText(getResources().getString(
                 R.string.value_format, roll));
     }
-
-
-
-
 }
