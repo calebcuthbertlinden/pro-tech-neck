@@ -1,12 +1,20 @@
 package com.example.protechneck.Util;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
 import android.util.Log;
 
 import com.example.protechneck.Models.PostureEventType;
 
 public class SensorUtil {
+
+    private static float[] accelerometerReading = new float[3];
+    private static float[] magnetometerReading = new float[3];
+    private static float[] rotationMatrix = new float[9];
+    private static float[] orientationAngles = new float[3];
 
     public SensorUtil(){}
 
@@ -79,4 +87,66 @@ public class SensorUtil {
         }
     }
 
+    /**
+     *
+     * @param serviceClass
+     * @param context
+     * @return
+     */
+    public static boolean isMyServiceRunning(Class<?> serviceClass, Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.i ("isMyServiceRunning?", true+"");
+                return true;
+            }
+        }
+        Log.i ("isMyServiceRunning?", false+"");
+        return false;
+    }
+
+    /**
+     *
+     * @param event
+     * @param index
+     * @return
+     */
+    public static float getOrientationValue(SensorEvent event, int index) {
+        switch (event.sensor.getType()) {
+            case Sensor.TYPE_ACCELEROMETER:
+                accelerometerReading = SensorUtil.getSensorEvent(event);
+                break;
+            case Sensor.TYPE_MAGNETIC_FIELD:
+                magnetometerReading = SensorUtil.getSensorEvent(event);
+                break;
+            default:
+                return 0F;
+        }
+
+        float[] rotationMatrix = new float[9];
+        boolean rotationOK = SensorManager.getRotationMatrix(rotationMatrix,
+                null, accelerometerReading, magnetometerReading);
+
+        float[] orientationValues = new float[3];
+        if (rotationOK) {
+            SensorManager.getOrientation(rotationMatrix, orientationValues);
+        }
+
+        return orientationValues[index];
+    }
+
+    /**
+     *
+     */
+    public static void setRotationMatrix() {
+        SensorManager.getRotationMatrix(rotationMatrix, null,
+                accelerometerReading, magnetometerReading);
+    }
+
+    /**
+     *
+     */
+    public static void setOrientation() {
+        SensorManager.getOrientation(rotationMatrix, orientationAngles);
+    }
 }

@@ -1,8 +1,6 @@
 package com.example.protechneck.Util;
 
-import android.app.IntentService;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -19,22 +17,11 @@ public class NeckCheckerService extends Service implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor magneticField;
-    private Context applicationContext;
-
-    private float[] accelerometerReading = new float[3];
-    private float[] magnetometerReading = new float[3];
-    private float[] rotationMatrix = new float[9];
-    private float[] orientationAngles = new float[3];
 
     private boolean enabled = false;
 
     public NeckCheckerService() {
         super();
-    }
-
-    public NeckCheckerService(Context applicationContext) {
-        super();
-        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -72,9 +59,8 @@ public class NeckCheckerService extends Service implements SensorEventListener {
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-        SensorManager.getRotationMatrix(rotationMatrix, null,
-                accelerometerReading, magnetometerReading);
-        SensorManager.getOrientation(rotationMatrix, orientationAngles);
+        SensorUtil.setRotationMatrix();
+        SensorUtil.setOrientation();
     }
 
     /**
@@ -82,27 +68,7 @@ public class NeckCheckerService extends Service implements SensorEventListener {
      * @param event any event triggered by a sensor with a listener attached
      */
     public void onSensorChanged(SensorEvent event) {
-        switch (event.sensor.getType()) {
-            case Sensor.TYPE_ACCELEROMETER:
-                accelerometerReading = SensorUtil.getSensorEvent(event);
-                break;
-            case Sensor.TYPE_MAGNETIC_FIELD:
-                magnetometerReading = SensorUtil.getSensorEvent(event);
-                break;
-            default:
-                return;
-        }
-
-        float[] rotationMatrix = new float[9];
-        boolean rotationOK = SensorManager.getRotationMatrix(rotationMatrix,
-                null, accelerometerReading, magnetometerReading);
-
-        float[] orientationValues = new float[3];
-        if (rotationOK) {
-            SensorManager.getOrientation(rotationMatrix, orientationValues);
-        }
-
-        determineAction(orientationValues[1]);
+        determineAction(SensorUtil.getOrientationValue(event, 1));
     }
 
     /**
