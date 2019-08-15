@@ -1,4 +1,4 @@
-package com.example.protechneck;
+package com.example.protechneck.Models;
 
 public enum PostureAnalyticsEvent {
     BAD_POSTURE,
