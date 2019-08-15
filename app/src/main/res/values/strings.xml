@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">ProTechNeck</string>
 
     <!-- Text view labels for orientation data -->
@@ -14,5 +14,11 @@
 
     <string name="raise_phone_instruction">Raise phone to eye level to a better neck position. \nMove your head, not just your eyes.</string>
     <string name="tech_neck_description">Helping you avoid neck strain.</string>
-    <string name="title_activity_tech_neck">TechNeckActivity</string>
+    <string name="title_activity_tech_neck" tools:ignore="ExtraTranslation">TechNeckActivity</string>
+
+    <string name="posture_type_bad">Bad posture</string>
+    <string name="posture_type_okay">Okay posture</string>
+    <string name="posture_type_good">Bad posture</string>
+
+
 </resources>
