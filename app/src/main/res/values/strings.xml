@@ -11,4 +11,8 @@
      %1 is the value to replace
      $.2f says the value is a float, with two decimal places.  -->
     <string name="value_format">%1$.2f</string>
+
+    <string name="raise_phone_instruction">Raise phone to eye level to a better neck position. \nMove your head, not just your eyes.</string>
+    <string name="tech_neck_description">Helping you avoid neck strain.</string>
+    <string name="title_activity_tech_neck">TechNeckActivity</string>
 </resources>
