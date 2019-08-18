@@ -4,11 +4,13 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.protechneck.R;
+import com.example.protechneck.ui.TechNeckActivity;
 
 public class NotificationService extends Service {
 
@@ -34,17 +36,24 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         if (intent != null) {
             String action = intent.getAction();
             switch (action) {
                 case ACTION_START_FOREGROUND_SERVICE:
-                    initiateNotification();
+                    if (!pref.getBoolean("TECH_NECK_RUNNING", false)) {
+                        initiateNotification();
+                    }
                     break;
                 case ACTION_STOP_FOREGROUND_SERVICE:
                     stopForegroundService();
                     break;
                 case ACTION_OPEN:
-                    // TODO [7] open the application
+                    Intent techNeckIntent = new Intent(this, TechNeckActivity.class);
+                    techNeckIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    techNeckIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                    startActivity(techNeckIntent);
+                    stopForegroundService();
                     break;
             }
         }

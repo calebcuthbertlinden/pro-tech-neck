@@ -1,5 +1,6 @@
 package com.example.protechneck.ui;
 
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -26,6 +27,8 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
     private Sensor accelerometer;
     private Sensor magneticField;
 
+    private SharedPreferences pref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +37,12 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
         postureType = findViewById(R.id.posture_type);
         container = findViewById(R.id.container);
 
+        pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        updateSharedPref(true);
+
         initSensors();
         validateAndRegisterListener(accelerometer, Sensor.TYPE_ACCELEROMETER);
         validateAndRegisterListener(magneticField, Sensor.TYPE_MAGNETIC_FIELD);
-
-        determineAction(PostureEventType.valueOf(getIntent().getStringExtra("VIEW_TYPE_EXTRA")));
     }
 
     private void initSensors() {
@@ -104,6 +108,20 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
             default:
                 break;
         }
+    }
+
+    private void updateSharedPref(boolean isRunning) {
+        pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("TECH_NECK_RUNNING", isRunning);
+        editor.commit();
+    }
+
+    @Override
+    public void onDestroy() {
+        updateSharedPref(false);
+        super.onDestroy();
+        Log.i("EXIT", "ondestroy!");
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {

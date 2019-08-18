@@ -1,7 +1,10 @@
 package com.example.protechneck.services;
 
+import android.app.ActivityManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -95,10 +98,11 @@ public class NeckCheckerService extends Service implements SensorEventListener {
         PostureEventType viewType = SensorUtil.determineViewTypeUsingPitch(pitch);
         if (viewType == PostureEventType.FLAT_PHONE && !enabled && pitch != 0.0) {
 
-            enabled = true;
             Intent intent = new Intent(getApplicationContext(), NotificationService.class);
             intent.setAction(NotificationService.ACTION_START_FOREGROUND_SERVICE);
             startService(intent);
+            enabled = isNotificationServiceRunning();
+            stopSelf();
 
 //            Intent intent = new Intent(this, TechNeckActivity.class);
 //            intent.putExtra("VIEW_TYPE_EXTRA", viewType.toString());
@@ -106,5 +110,17 @@ public class NeckCheckerService extends Service implements SensorEventListener {
 //            enabled = true;
 //            startActivity(intent);
         }
+    }
+
+    private boolean isNotificationServiceRunning() {
+        ActivityManager manager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (NotificationService.class.getName().equals(service.service.getClassName())) {
+                Log.i ("isMyServiceRunning?", true+"");
+                return true;
+            }
+        }
+        Log.i ("isMyServiceRunning?", false+"");
+        return false;
     }
 }

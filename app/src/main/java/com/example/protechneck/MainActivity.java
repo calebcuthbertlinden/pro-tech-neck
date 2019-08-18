@@ -1,6 +1,7 @@
 package com.example.protechneck;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -20,8 +21,16 @@ public class MainActivity extends AppCompatActivity {
         if (!SensorUtil.isMyServiceRunning(mSensorService.getClass(), this)) {
             startService(mServiceIntent);
         }
+        updateSharedPref();
         this.startService(mServiceIntent);
         finish();
+    }
+
+    private void updateSharedPref() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("TECH_NECK_RUNNING", false);
+        editor.commit();
     }
 
     protected void onResume() {
