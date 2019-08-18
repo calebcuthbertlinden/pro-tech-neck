@@ -1,4 +1,4 @@
-package com.example.protechneck.Util;
+package com.example.protechneck.util;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.util.Log;
 
-import com.example.protechneck.Models.PostureEventType;
+import com.example.protechneck.models.PostureEventType;
 
 public class SensorUtil {
 

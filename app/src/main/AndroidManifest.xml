@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Util.TechNeckActivity"
+            android:name=".ui.TechNeckActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleInstance">
             android:label="@string/title_activity_tech_neck"
@@ -21,19 +21,25 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".services.NeckCheckerService"
+            android:exported="true"
+            android:enabled="true" >
+        </service>
 
         <service
-            android:name=".Util.NeckCheckerService"
+            android:name=".services.NotificationService"
             android:exported="true"
             android:enabled="true" >
         </service>
 
         <receiver
-            android:name=".Util.SensorRestartBroadcastReceiver"
+            android:name=".services.SensorRestartBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
             android:label="RestartServiceWhenStopped">
