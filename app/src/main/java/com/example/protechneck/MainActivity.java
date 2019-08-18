@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.protechneck.Util.NeckCheckerService;
-import com.example.protechneck.Util.SensorUtil;
+import com.example.protechneck.services.NeckCheckerService;
+import com.example.protechneck.util.SensorUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
             startService(mServiceIntent);
         }
         this.startService(mServiceIntent);
+        finish();
     }
 
     protected void onResume() {

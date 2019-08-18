@@ -1,4 +1,4 @@
-package com.example.protechneck.Util;
+package com.example.protechneck.ui;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -11,9 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.example.protechneck.Models.PostureAnalyticsEvent;
-import com.example.protechneck.Models.PostureEventType;
 import com.example.protechneck.R;
+import com.example.protechneck.models.PostureAnalyticsEvent;
+import com.example.protechneck.models.PostureEventType;
+import com.example.protechneck.util.AnalyticsUtil;
+import com.example.protechneck.util.SensorUtil;
 
 public class TechNeckActivity extends AppCompatActivity implements SensorEventListener {
 

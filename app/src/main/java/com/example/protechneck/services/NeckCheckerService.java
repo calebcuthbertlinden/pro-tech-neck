@@ -1,4 +1,4 @@
-package com.example.protechneck.Util;
+package com.example.protechneck.services;
 
 import android.app.Service;
 import android.content.Intent;
@@ -10,7 +10,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.protechneck.Models.PostureEventType;
+import com.example.protechneck.models.PostureEventType;
+import com.example.protechneck.util.SensorUtil;
 
 public class NeckCheckerService extends Service implements SensorEventListener {
 
@@ -64,7 +65,6 @@ public class NeckCheckerService extends Service implements SensorEventListener {
     }
 
     /**
-     *
      * @param event any event triggered by a sensor with a listener attached
      */
     public void onSensorChanged(SensorEvent event) {
@@ -72,9 +72,8 @@ public class NeckCheckerService extends Service implements SensorEventListener {
     }
 
     /**
-     *
      * @param sensor the sensor to attach the listener to
-     * @param type the type of sensor we want to attach a listener to
+     * @param type   the type of sensor we want to attach a listener to
      */
     private void validateAndRegisterListener(Sensor sensor, int type) {
         if (sensor != null) {
@@ -90,17 +89,22 @@ public class NeckCheckerService extends Service implements SensorEventListener {
     }
 
     /**
-     *
      * @param pitch the z axis of the phone in portrait mode
      */
     private void determineAction(float pitch) {
         PostureEventType viewType = SensorUtil.determineViewTypeUsingPitch(pitch);
         if (viewType == PostureEventType.FLAT_PHONE && !enabled && pitch != 0.0) {
-            Intent intent = new Intent(this, TechNeckActivity.class);
-            intent.putExtra("VIEW_TYPE_EXTRA", viewType.toString());
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
             enabled = true;
-            startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), NotificationService.class);
+            intent.setAction(NotificationService.ACTION_START_FOREGROUND_SERVICE);
+            startService(intent);
+
+//            Intent intent = new Intent(this, TechNeckActivity.class);
+//            intent.putExtra("VIEW_TYPE_EXTRA", viewType.toString());
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            enabled = true;
+//            startActivity(intent);
         }
     }
 }
