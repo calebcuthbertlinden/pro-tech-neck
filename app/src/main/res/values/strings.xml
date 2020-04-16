@@ -18,7 +18,7 @@
 
     <string name="posture_type_bad">Bad posture</string>
     <string name="posture_type_okay">Okay posture</string>
-    <string name="posture_type_good">Bad posture</string>
+    <string name="posture_type_good">Good posture</string>
 
 
 </resources>
