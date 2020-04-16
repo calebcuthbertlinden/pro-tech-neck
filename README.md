@@ -5,6 +5,12 @@ Mobile device usage is an instance of an everyday activity that requires repetit
 
 This application aims to curb bad posture incurred while using a mobile device. This application will be installed on that device, and will monitor how you are holding your phone. If you have taken bad posture it will guide you back into good posture.
 
+### Reading
+https://www.spine-health.com/conditions/neck-pain/text-neck-treatment-and-prevention
+https://spineina.com/blog/all-about-tech-neck/
+https://healthmatters.nyp.org/how-to-prevent-tech-neck/
+https://neckhammock.com/blogs/blog-posts/what-is-tech-neck
+
 ### Designs
 https://www.figma.com/file/9nQwo2T3NzzntMbviS4LrQ/ProTechNeck?node-id=1%3A139
 
