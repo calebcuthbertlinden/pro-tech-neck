@@ -12,7 +12,7 @@
         <activity
             android:name=".ui.TechNeckActivity"
             android:screenOrientation="portrait"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance"
             android:label="@string/title_activity_tech_neck"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 

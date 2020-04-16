@@ -6,12 +6,14 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.protechneck.R;
 import com.example.protechneck.models.PostureAnalyticsEvent;
 import com.example.protechneck.models.PostureEventType;
@@ -22,6 +24,7 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
 
     private TextView postureType;
     private ConstraintLayout container;
+    private LottieAnimationView animation;
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
@@ -36,6 +39,8 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
 
         postureType = findViewById(R.id.posture_type);
         container = findViewById(R.id.container);
+        animation = findViewById(R.id.animation_view);
+        animation.playAnimation();
 
         pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         updateSharedPref(true);
