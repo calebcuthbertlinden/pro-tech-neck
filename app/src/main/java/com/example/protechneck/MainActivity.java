@@ -10,6 +10,10 @@ import com.example.protechneck.util.SensorUtil;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String PREF_KEY = "MyPref";
+    public static final String PREF_IS_SERVICE_RUNNING = "TECH_NECK_RUNNING";
+    private static final String PREF_IS_RETURNING_USER = "IS_RETURNING_USER";
+
     Intent mServiceIntent;
 
     @Override
@@ -21,30 +25,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (isFirstTimeUser()) {
+        if (isReturningUser()) {
             NeckCheckerService mSensorService = new NeckCheckerService();
             mServiceIntent = new Intent(this, mSensorService.getClass());
             if (!SensorUtil.isMyServiceRunning(mSensorService.getClass(), this)) {
                 startService(mServiceIntent);
             }
-            updateSharedPref();
+            setAppServiceRunningPreference();
+            // close app and start service
             this.startService(mServiceIntent);
             finish();
         } else {
-            // TODO 11 - go to onboarding
+            setupOnboarding();
         }
     }
 
-    private void updateSharedPref() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+    private void setAppServiceRunningPreference() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(PREF_KEY, 0);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("TECH_NECK_RUNNING", false);
+        editor.putBoolean(PREF_IS_SERVICE_RUNNING, false);
         editor.apply();
     }
 
-    private boolean isFirstTimeUser() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-        return pref.getBoolean("IS_RETURNING_USER", false);
+    private boolean isReturningUser() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(PREF_KEY, 0);
+        return pref.getBoolean(PREF_IS_RETURNING_USER, false);
+    }
+
+    private void setupOnboarding() {
+        // TODO 11 - go to onboarding
     }
 
     protected void onStop() {

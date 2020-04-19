@@ -12,6 +12,8 @@ import android.util.Log;
 import com.example.protechneck.R;
 import com.example.protechneck.ui.TechNeckActivity;
 
+import static com.example.protechneck.MainActivity.PREF_IS_SERVICE_RUNNING;
+
 public class NotificationService extends Service {
 
     private static final String TAG_FOREGROUND_SERVICE = "FOREGROUND_SERVICE";
@@ -37,11 +39,11 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-        if (intent != null) {
-            String action = intent.getAction();
+        String action = intent != null ? intent.getAction() : null;
+        if (action != null) {
             switch (action) {
                 case ACTION_START_FOREGROUND_SERVICE:
-                    if (!pref.getBoolean("TECH_NECK_RUNNING", false)) {
+                    if (!pref.getBoolean(PREF_IS_SERVICE_RUNNING, false)) {
                         initiateNotification();
                     }
                     break;

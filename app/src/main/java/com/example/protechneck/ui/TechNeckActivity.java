@@ -19,6 +19,8 @@ import com.example.protechneck.models.PostureEventType;
 import com.example.protechneck.util.AnalyticsUtil;
 import com.example.protechneck.util.SensorUtil;
 
+import static com.example.protechneck.MainActivity.PREF_IS_SERVICE_RUNNING;
+
 public class TechNeckActivity extends AppCompatActivity implements SensorEventListener {
 
     private TextView postureType;
@@ -116,8 +118,8 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
     private void updateSharedPref(boolean isRunning) {
         pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("TECH_NECK_RUNNING", isRunning);
-        editor.commit();
+        editor.putBoolean(PREF_IS_SERVICE_RUNNING, isRunning);
+        editor.apply();
     }
 
     @Override
