@@ -1,0 +1,24 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">ProTechNeck</string>
+
+    <!-- Text view labels for orientation data -->
+    <string name="label_azimuth_string">Azmiuth:</string>
+    <string name="label_pitch_string">Pitch:</string>
+    <string name="label_roll_string">Roll:</string>
+
+    <!-- String for the orientation values. The %1$.2f part is a placeholder
+     that will be filled in at runtime:
+     %1 is the value to replace
+     $.2f says the value is a float, with two decimal places.  -->
+    <string name="value_format">%1$.2f</string>
+
+    <string name="raise_phone_instruction">Raise phone to eye level to a better neck position. \nMove your head, not just your eyes.</string>
+    <string name="tech_neck_description">Helping you avoid neck strain.</string>
+    <string name="title_activity_tech_neck" tools:ignore="ExtraTranslation">TechNeckActivity</string>
+
+    <string name="posture_type_bad">Bad posture</string>
+    <string name="posture_type_okay">Okay posture</string>
+    <string name="posture_type_good">Good posture</string>
+
+
+</resources>
