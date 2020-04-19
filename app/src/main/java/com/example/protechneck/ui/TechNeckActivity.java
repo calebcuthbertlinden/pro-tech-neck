@@ -6,14 +6,13 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-
-import com.airbnb.lottie.LottieAnimationView;
 import com.example.protechneck.R;
 import com.example.protechneck.models.PostureAnalyticsEvent;
 import com.example.protechneck.models.PostureEventType;
@@ -24,7 +23,6 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
 
     private TextView postureType;
     private ConstraintLayout container;
-    private LottieAnimationView animation;
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
@@ -39,15 +37,16 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
 
         postureType = findViewById(R.id.posture_type);
         container = findViewById(R.id.container);
-        animation = findViewById(R.id.animation_view);
-        animation.playAnimation();
 
         pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         updateSharedPref(true);
 
         initSensors();
-        validateAndRegisterListener(accelerometer, Sensor.TYPE_ACCELEROMETER);
-        validateAndRegisterListener(magneticField, Sensor.TYPE_MAGNETIC_FIELD);
+        if (!validateAndRegisterListener(accelerometer, Sensor.TYPE_ACCELEROMETER) &&
+                !validateAndRegisterListener(magneticField, Sensor.TYPE_MAGNETIC_FIELD)) {
+            Toast.makeText(this, "This device does not have the necessary hardware to support this application",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     private void initSensors() {
@@ -60,7 +59,6 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
     }
 
     /**
-     *
      * @param event any event triggered by a sensor with a listener attached
      */
     public void onSensorChanged(SensorEvent event) {
@@ -69,21 +67,21 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
     }
 
     /**
-     *
      * @param sensor the sensor to attach the listener to
-     * @param type the type of sensor we want to attach a listener to
+     * @param type   the type of sensor we want to attach a listener to
      */
-    private void validateAndRegisterListener(Sensor sensor, int type) {
+    private boolean validateAndRegisterListener(Sensor sensor, int type) {
         if (sensor != null) {
             sensorManager.registerListener(this, sensor,
                     SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
+            return true;
         } else {
             SensorUtil.logUnavailableSensor(type);
+            return false;
         }
     }
 
     /**
-     *
      * @param viewType
      */
     private void determineAction(PostureEventType viewType) {

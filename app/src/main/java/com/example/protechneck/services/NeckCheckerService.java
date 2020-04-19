@@ -1,17 +1,14 @@
 package com.example.protechneck.services;
 
-import android.app.ActivityManager;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.util.Log;
-
-import androidx.annotation.Nullable;
 
 import com.example.protechneck.models.PostureEventType;
 import com.example.protechneck.ui.TechNeckActivity;
@@ -96,32 +93,39 @@ public class NeckCheckerService extends Service implements SensorEventListener {
      * @param pitch the z axis of the phone in portrait mode
      */
     private void determineAction(float pitch) {
-        PostureEventType viewType = SensorUtil.determineViewTypeUsingPitch(pitch);
-        if (viewType == PostureEventType.FLAT_PHONE && !enabled && pitch != 0.0) {
-//
-//            Intent intent = new Intent(getApplicationContext(), NotificationService.class);
-//            intent.setAction(NotificationService.ACTION_START_FOREGROUND_SERVICE);
-//            startService(intent);
-//            enabled = isNotificationServiceRunning();
-//            stopSelf();
+        if (!enabled && pitch != 0.0) {
+            PostureEventType viewType = SensorUtil.determineViewTypeUsingPitch(pitch);
 
-            Intent intent = new Intent(this, TechNeckActivity.class);
-            intent.putExtra("VIEW_TYPE_EXTRA", viewType.toString());
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            enabled = true;
-            startActivity(intent);
+            switch (viewType) {
+                case FLAT_PHONE:
+                case LOW_ANGLED:
+                    startService(viewType);
+                    break;
+                case HIGH_ANGLED:
+                    break;
+                case PERFECT_POSTURE:
+                    break;
+                case NA:
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
-    private boolean isNotificationServiceRunning() {
-        ActivityManager manager = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (NotificationService.class.getName().equals(service.service.getClassName())) {
-                Log.i ("isMyServiceRunning?", true+"");
-                return true;
-            }
-        }
-        Log.i ("isMyServiceRunning?", false+"");
-        return false;
+    private void startService(PostureEventType viewType) {
+        Intent intent = new Intent(this, TechNeckActivity.class);
+        intent.putExtra("VIEW_TYPE_EXTRA", viewType.toString());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        enabled = true;
+        startActivity(intent);
+
+//          TODO implement notification service
+//            Intent intent = new Intent(getApplicationContext(), NotificationService.class);
+//            intent.setAction(NotificationService.ACTION_START_FOREGROUND_SERVICE);
+//            startService(intent);
+//            enabled = SensorUtil.isMyServiceRunning(this.getClass(), this);
+//            stopSelf();
+
     }
 }
