@@ -6,18 +6,21 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.example.protechneck.R;
 import com.example.protechneck.models.PostureAnalyticsEvent;
 import com.example.protechneck.models.PostureEventType;
 import com.example.protechneck.util.AnalyticsUtil;
 import com.example.protechneck.util.SensorUtil;
+
+import static com.example.protechneck.MainActivity.PREF_IS_SERVICE_RUNNING;
 
 public class TechNeckActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -116,8 +119,8 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
     private void updateSharedPref(boolean isRunning) {
         pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("TECH_NECK_RUNNING", isRunning);
-        editor.commit();
+        editor.putBoolean(PREF_IS_SERVICE_RUNNING, isRunning);
+        editor.apply();
     }
 
     @Override

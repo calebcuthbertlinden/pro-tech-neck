@@ -20,5 +20,12 @@
     <string name="posture_type_okay">Okay posture</string>
     <string name="posture_type_good">Good posture</string>
 
+    <string name="app_title">Protek Neck</string>
+    <string name="app_description">Pro-actively protecting necks from strain</string>
+    <string name="get_started">Get started</string>
 
+    <string name="onboarding_page_1_title">Who is this for?</string>
+    <string name="onboarding_page_2_title">What does it do?</string>
+    <string name="onboarding_page_1_description">This is for anyone who struggles with neck pain and strain on a daily basis. This app can be used to break the bad habit of looking down at your phone.</string>
+    <string name="onboarding_page_2_description">Based on your preferred settings, the app will alert you when you are using your device while adopting bad posture, and guide you back into the correct posture.</string>
 </resources>

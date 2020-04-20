@@ -6,11 +6,14 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
 
 import com.example.protechneck.R;
 import com.example.protechneck.ui.TechNeckActivity;
+
+import static com.example.protechneck.MainActivity.PREF_IS_SERVICE_RUNNING;
 
 public class NotificationService extends Service {
 
@@ -37,11 +40,11 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-        if (intent != null) {
-            String action = intent.getAction();
+        String action = intent != null ? intent.getAction() : null;
+        if (action != null) {
             switch (action) {
                 case ACTION_START_FOREGROUND_SERVICE:
-                    if (!pref.getBoolean("TECH_NECK_RUNNING", false)) {
+                    if (!pref.getBoolean(PREF_IS_SERVICE_RUNNING, false)) {
                         initiateNotification();
                     }
                     break;
