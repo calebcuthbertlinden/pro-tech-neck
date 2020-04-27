@@ -20,12 +20,27 @@
     <string name="posture_type_okay">Okay posture</string>
     <string name="posture_type_good">Good posture</string>
 
+    <!-- ONBOARDING -->
     <string name="app_title">Protek Neck</string>
     <string name="app_description">Pro-actively protecting necks from strain</string>
     <string name="get_started">Get started</string>
+    <string name="btn_continue">Continue</string>
 
     <string name="onboarding_page_1_title">Who is this for?</string>
     <string name="onboarding_page_2_title">What does it do?</string>
     <string name="onboarding_page_1_description">This is for anyone who struggles with neck pain and strain on a daily basis. This app can be used to break the bad habit of looking down at your phone.</string>
     <string name="onboarding_page_2_description">Based on your preferred settings, the app will alert you when you are using your device while adopting bad posture, and guide you back into the correct posture.</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- SETTINGS -->
+    <string name="settings_allow">I allow this</string>
+    <string name="settings_background_permission">Background permission</string>
+    <string name="settings_background_permission_description">In order for this to work, you have to allow the aoo to run in the bacjground. This is the only way it can pick up your posture</string>
+    <string name="settings_strictness">Strictness</string>
+    <string name="settings_strictness_description">These settings determine how strict the app is. We understand this app can be intrusive, so it is up to you just how intrusive it is</string>
+    <string name="settings_very_strict">Very strict</string>
+    <string name="settings_not_so_strict">Not so strict</string>
+    <string name="settings_leniant">Leniant</string>
+
+
 </resources>
