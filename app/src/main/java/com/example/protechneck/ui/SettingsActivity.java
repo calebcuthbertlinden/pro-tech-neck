@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,7 +24,13 @@ import static com.example.protechneck.MainActivity.PREF_KEY;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    public static final String PREF_APP_STRICTNESS = "PREF_APP_STRICTNESS";
+
     Intent mServiceIntent;
+
+    private String strictnessChosen;
+
+    @BindView(R.id.strictness) RadioGroup strictness;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +57,36 @@ public class SettingsActivity extends AppCompatActivity {
         // close app and start service
         this.startService(mServiceIntent);
         setIsReturningUserPreference(true);
+        setAppStrictnessPreference();
         finish();
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.strict:
+                if (checked)
+                    strictnessChosen = "STRICT";
+                    break;
+            case R.id.not_so_strict:
+                if (checked)
+                    strictnessChosen = "NOT_SO_STRICT";
+                    break;
+            case R.id.leniant:
+                if (checked)
+                    strictnessChosen = "LENIANT";
+                    break;
+        }
+    }
+
+    private void setAppStrictnessPreference() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(PREF_KEY, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(PREF_APP_STRICTNESS, strictnessChosen);
+        editor.apply();
     }
 
     private void setAppServiceRunningPreference() {
