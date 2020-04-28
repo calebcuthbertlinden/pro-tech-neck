@@ -12,6 +12,7 @@ import com.example.protechneck.R;
 import com.example.protechneck.services.NeckCheckerService;
 import com.example.protechneck.util.SensorUtil;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 

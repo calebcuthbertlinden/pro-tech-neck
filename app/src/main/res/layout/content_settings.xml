@@ -78,65 +78,44 @@
 
 
             <RadioGroup
+                android:id="@+id/strictness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/gutterSpaceDouble">
+                android:padding="@dimen/gutterSpaceDouble"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <RadioButton
+                    android:id="@+id/strict"
+                    android:padding="8dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:textColor="@color/radio_flat_text_selector"
+                    android:background="@drawable/radio_flat_selector"
+                    android:text="@string/settings_very_strict"
+                    android:button="@null" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/settings_very_strict"
-                        android:textSize="12sp" />
-
-                    <RadioButton
-                        android:layout_alignParentEnd="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <RadioButton
+                    android:id="@+id/not_so_strict"
+                    android:padding="8dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:textColor="@color/radio_flat_text_selector"
+                    android:background="@drawable/radio_flat_selector"
+                    android:text="@string/settings_not_so_strict"
+                    android:button="@null" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/settings_not_so_strict"
-                        android:textSize="12sp" />
-
-                    <RadioButton
-                        android:layout_alignParentEnd="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <RadioButton
+                    android:id="@+id/lemiant"
+                    android:padding="8dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/settings_leniant"
-                        android:textSize="12sp" />
-
-                    <RadioButton
-                        android:layout_alignParentEnd="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </RelativeLayout>
-
+                    android:textColor="@color/radio_flat_text_selector"
+                    android:background="@drawable/radio_flat_selector"
+                    android:text="@string/settings_leniant"
+                    android:button="@null" />
             </RadioGroup>
+
 
             <Button
                 android:layout_gravity="center"

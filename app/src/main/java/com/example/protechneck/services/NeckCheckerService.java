@@ -94,7 +94,7 @@ public class NeckCheckerService extends Service implements SensorEventListener {
      * @param pitch the z axis of the phone in portrait mode
      */
     private void determineAction(float pitch) {
-        if (!enabled && pitch != 0.0) {
+        if (!enabled) {
             PostureEventType viewType = SensorUtil.determineViewTypeUsingPitch(pitch);
 
             switch (viewType) {
