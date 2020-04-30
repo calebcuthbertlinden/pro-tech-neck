@@ -11,6 +11,7 @@ public class PreferencesHelper {
     private static final String PREF_IS_SERVICE_RUNNING = "TECH_NECK_RUNNING";
     private static final String PREF_IS_RETURNING_USER = "IS_RETURNING_USER";
     private static final String PREF_APP_STRICTNESS = "PREF_APP_STRICTNESS";
+    private static final String PREF_ALLOW_SHOW = "PREF_ALLOW_SHOW";
 
     private static PreferencesHelper instance;
     private final Context context;
@@ -49,6 +50,13 @@ public class PreferencesHelper {
         editor.apply();
     }
 
+    public void setAllowedToShow(boolean allowed) {
+        SharedPreferences pref = context.getSharedPreferences(PREF_KEY, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(PREF_ALLOW_SHOW, allowed);
+        editor.apply();
+    }
+
     public boolean isReturningUser() {
         SharedPreferences pref = context.getSharedPreferences(PREF_KEY, 0);
         return pref.getBoolean(PREF_IS_RETURNING_USER, false);
@@ -62,6 +70,11 @@ public class PreferencesHelper {
     public String getPrefAppStrictness() {
         SharedPreferences pref = context.getSharedPreferences(PREF_KEY, 0);
         return pref.getString(PREF_APP_STRICTNESS, "NA");
+    }
+
+    public boolean getAllowShow() {
+        SharedPreferences pref = context.getSharedPreferences(PREF_KEY, 0);
+        return pref.getBoolean(PREF_ALLOW_SHOW, true);
     }
 
 }
