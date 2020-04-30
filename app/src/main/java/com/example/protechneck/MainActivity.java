@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         if (PreferencesHelper.getInstance(getApplicationContext()).isReturningUser()) {
             NeckCheckerService mSensorService = new NeckCheckerService();
             mServiceIntent = new Intent(this, mSensorService.getClass());
-            if (!SensorUtil.isMyServiceRunning(mSensorService.getClass(), this)) {
+            if (!SensorUtil.getInstance(this).isMyServiceRunning(mSensorService.getClass())) {
                 startService(mServiceIntent);
             }
             PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(false);

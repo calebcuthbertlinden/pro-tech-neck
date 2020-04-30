@@ -13,7 +13,7 @@ import com.example.protechneck.R;
 import com.example.protechneck.services.NeckCheckerService;
 import com.example.protechneck.util.PreferencesHelper;
 import com.example.protechneck.util.SensorUtil;
-import com.example.protechneck.util.Strictness;
+import com.example.protechneck.models.Strictness;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
         // TODO this code will sit here until next ticket implemented
         NeckCheckerService mSensorService = new NeckCheckerService();
         mServiceIntent = new Intent(this, mSensorService.getClass());
-        if (!SensorUtil.isMyServiceRunning(mSensorService.getClass(), this)) {
+        if (!SensorUtil.getInstance(this).isMyServiceRunning(mSensorService.getClass())) {
             startService(mServiceIntent);
         }
         PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(false);

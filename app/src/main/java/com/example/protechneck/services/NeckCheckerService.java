@@ -15,7 +15,7 @@ import com.example.protechneck.models.PostureEventType;
 import com.example.protechneck.ui.TechNeckActivity;
 import com.example.protechneck.util.PreferencesHelper;
 import com.example.protechneck.util.SensorUtil;
-import com.example.protechneck.util.Strictness;
+import com.example.protechneck.models.Strictness;
 
 import static com.example.protechneck.models.PostureEventType.FLAT_PHONE;
 import static com.example.protechneck.models.PostureEventType.LOW_ANGLED;
