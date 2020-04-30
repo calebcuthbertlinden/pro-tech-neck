@@ -1,7 +1,6 @@
 package com.example.protechneck.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
@@ -12,19 +11,15 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.protechneck.R;
 import com.example.protechneck.services.NeckCheckerService;
+import com.example.protechneck.util.PreferencesHelper;
 import com.example.protechneck.util.SensorUtil;
+import com.example.protechneck.util.Strictness;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.example.protechneck.MainActivity.PREF_IS_RETURNING_USER;
-import static com.example.protechneck.MainActivity.PREF_IS_SERVICE_RUNNING;
-import static com.example.protechneck.MainActivity.PREF_KEY;
-
 public class SettingsActivity extends AppCompatActivity {
-
-    public static final String PREF_APP_STRICTNESS = "PREF_APP_STRICTNESS";
 
     Intent mServiceIntent;
 
@@ -53,11 +48,11 @@ public class SettingsActivity extends AppCompatActivity {
         if (!SensorUtil.isMyServiceRunning(mSensorService.getClass(), this)) {
             startService(mServiceIntent);
         }
-        setAppServiceRunningPreference();
+        PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(false);
         // close app and start service
         this.startService(mServiceIntent);
-        setIsReturningUserPreference(true);
-        setAppStrictnessPreference();
+        PreferencesHelper.getInstance(getApplicationContext()).setIsReturningUserPreference();
+        PreferencesHelper.getInstance(getApplicationContext()).setAppStrictnessPreference(strictnessChosen);
         finish();
     }
 
@@ -69,38 +64,16 @@ public class SettingsActivity extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.strict:
                 if (checked)
-                    strictnessChosen = "STRICT";
+                    strictnessChosen = Strictness.STRICT.name();
                     break;
             case R.id.not_so_strict:
                 if (checked)
-                    strictnessChosen = "NOT_SO_STRICT";
+                    strictnessChosen = Strictness.NOT_SO_STRICT.name();
                     break;
             case R.id.leniant:
                 if (checked)
-                    strictnessChosen = "LENIANT";
+                    strictnessChosen = Strictness.LENIANT.name();
                     break;
         }
     }
-
-    private void setAppStrictnessPreference() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(PREF_KEY, 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(PREF_APP_STRICTNESS, strictnessChosen);
-        editor.apply();
-    }
-
-    private void setAppServiceRunningPreference() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(PREF_KEY, 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(PREF_IS_SERVICE_RUNNING, false);
-        editor.apply();
-    }
-
-    private void setIsReturningUserPreference(boolean value) {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(PREF_KEY, 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(PREF_IS_RETURNING_USER, value);
-        editor.apply();
-    }
-
 }

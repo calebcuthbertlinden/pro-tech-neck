@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -12,8 +11,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.protechneck.R;
 import com.example.protechneck.ui.TechNeckActivity;
-
-import static com.example.protechneck.MainActivity.PREF_IS_SERVICE_RUNNING;
+import com.example.protechneck.util.PreferencesHelper;
 
 public class NotificationService extends Service {
 
@@ -39,12 +37,11 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         String action = intent != null ? intent.getAction() : null;
         if (action != null) {
             switch (action) {
                 case ACTION_START_FOREGROUND_SERVICE:
-                    if (!pref.getBoolean(PREF_IS_SERVICE_RUNNING, false)) {
+                    if (!PreferencesHelper.getInstance(getApplicationContext()).isServiceRunning()) {
                         initiateNotification();
                     }
                     break;

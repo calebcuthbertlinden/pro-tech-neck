@@ -18,9 +18,9 @@ import com.example.protechneck.R;
 import com.example.protechneck.models.PostureAnalyticsEvent;
 import com.example.protechneck.models.PostureEventType;
 import com.example.protechneck.util.AnalyticsUtil;
+import com.example.protechneck.util.PreferencesHelper;
 import com.example.protechneck.util.SensorUtil;
 
-import static com.example.protechneck.MainActivity.PREF_IS_SERVICE_RUNNING;
 
 public class TechNeckActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -31,8 +31,6 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
     private Sensor accelerometer;
     private Sensor magneticField;
 
-    private SharedPreferences pref;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +39,7 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
         postureType = findViewById(R.id.posture_type);
         container = findViewById(R.id.container);
 
-        pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-        updateSharedPref(true);
+        PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(true);
 
         initSensors();
         if (!validateAndRegisterListener(accelerometer, Sensor.TYPE_ACCELEROMETER) &&
@@ -116,16 +113,9 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
         }
     }
 
-    private void updateSharedPref(boolean isRunning) {
-        pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(PREF_IS_SERVICE_RUNNING, isRunning);
-        editor.apply();
-    }
-
     @Override
     public void onDestroy() {
-        updateSharedPref(false);
+        PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(false);
         super.onDestroy();
         Log.i("EXIT", "ondestroy!");
     }

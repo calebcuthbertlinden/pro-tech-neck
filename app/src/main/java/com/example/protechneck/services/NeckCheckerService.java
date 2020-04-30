@@ -22,6 +22,7 @@ public class NeckCheckerService extends Service implements SensorEventListener {
     private Sensor magneticField;
 
     private boolean enabled = false;
+    private final float INITIALISED_PITCH = 0.0F;
 
     public NeckCheckerService() {
         super();
@@ -94,9 +95,8 @@ public class NeckCheckerService extends Service implements SensorEventListener {
      * @param pitch the z axis of the phone in portrait mode
      */
     private void determineAction(float pitch) {
-        if (!enabled) {
+        if (!enabled && pitch != INITIALISED_PITCH) {
             PostureEventType viewType = SensorUtil.determineViewTypeUsingPitch(pitch);
-
             switch (viewType) {
                 case FLAT_PHONE:
                 case LOW_ANGLED:
