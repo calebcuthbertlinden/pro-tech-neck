@@ -59,4 +59,9 @@ public class PreferencesHelper {
         return pref.getBoolean(PREF_IS_SERVICE_RUNNING, false);
     }
 
+    public String getPrefAppStrictness() {
+        SharedPreferences pref = context.getSharedPreferences(PREF_KEY, 0);
+        return pref.getString(PREF_APP_STRICTNESS, "NA");
+    }
+
 }
