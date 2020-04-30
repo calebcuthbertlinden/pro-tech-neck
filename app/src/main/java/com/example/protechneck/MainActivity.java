@@ -1,7 +1,6 @@
 package com.example.protechneck;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,9 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.protechneck.services.NeckCheckerService;
-import com.example.protechneck.ui.OnboardingFragment;
 import com.example.protechneck.ui.OnboardingModel;
 import com.example.protechneck.ui.OnboardingViewpagerAdapter;
+import com.example.protechneck.ui.SettingsActivity;
+import com.example.protechneck.util.PreferencesHelper;
 import com.example.protechneck.util.SensorUtil;
 import com.pixelcan.inkpageindicator.InkPageIndicator;
 
@@ -24,10 +24,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String PREF_KEY = "MyPref";
-    public static final String PREF_IS_SERVICE_RUNNING = "TECH_NECK_RUNNING";
-    private static final String PREF_IS_RETURNING_USER = "IS_RETURNING_USER";
 
     Intent mServiceIntent;
 
@@ -48,24 +44,19 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.onboarding_pager);
         indicator = findViewById(R.id.onboarding_indicator);
 
-        if (isReturningUser()) {
+        if (PreferencesHelper.getInstance(getApplicationContext()).isReturningUser()) {
             NeckCheckerService mSensorService = new NeckCheckerService();
             mServiceIntent = new Intent(this, mSensorService.getClass());
             if (!SensorUtil.isMyServiceRunning(mSensorService.getClass(), this)) {
                 startService(mServiceIntent);
             }
-            setAppServiceRunningPreference();
+            PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(false);
             // close app and start service
             this.startService(mServiceIntent);
             finish();
         } else {
             setupOnboarding();
         }
-    }
-
-    private boolean isReturningUser() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(PREF_KEY, 0);
-        return pref.getBoolean(PREF_IS_RETURNING_USER, false);
     }
 
     private void setupOnboarding() {
@@ -85,31 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.done_button)
     public void onGetStartedClick(View view) {
-        // TODO this code will sit here until next ticket implemented
-        NeckCheckerService mSensorService = new NeckCheckerService();
-        mServiceIntent = new Intent(this, mSensorService.getClass());
-        if (!SensorUtil.isMyServiceRunning(mSensorService.getClass(), this)) {
-            startService(mServiceIntent);
-        }
-        setAppServiceRunningPreference();
-        // close app and start service
-        this.startService(mServiceIntent);
-        setIsReturningUserPreference(true);
-        finish();
-    }
-
-    private void setAppServiceRunningPreference() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(PREF_KEY, 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(PREF_IS_SERVICE_RUNNING, false);
-        editor.apply();
-    }
-
-    private void setIsReturningUserPreference(boolean value) {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(PREF_KEY, 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(PREF_IS_RETURNING_USER, value);
-        editor.apply();
+        this.startActivity(new Intent(this, SettingsActivity.class));
     }
 
     protected void onStop() {

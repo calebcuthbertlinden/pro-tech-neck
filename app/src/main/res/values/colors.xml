@@ -2,9 +2,9 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#FFB800</color>
 
-    <color name="goodBackground">#8DDFC5</color>
-    <color name="okayBackground">#F7E487</color>
-    <color name="badBackground">#F79687</color>
+    <color name="goodBackground">#277E50</color>
+    <color name="okayBackground">#FEA310</color>
+    <color name="badBackground">#E85C53</color>
 </resources>

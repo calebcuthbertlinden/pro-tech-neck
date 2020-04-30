@@ -4,4 +4,5 @@
     <dimen name="gutterSpaceDouble">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="onboarding_image_width">140dp</dimen>
+    <dimen name="radio_button_width">100dp</dimen>
 </resources>

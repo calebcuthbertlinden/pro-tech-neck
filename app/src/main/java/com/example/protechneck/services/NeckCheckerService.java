@@ -13,7 +13,12 @@ import androidx.annotation.Nullable;
 
 import com.example.protechneck.models.PostureEventType;
 import com.example.protechneck.ui.TechNeckActivity;
+import com.example.protechneck.util.PreferencesHelper;
 import com.example.protechneck.util.SensorUtil;
+import com.example.protechneck.util.Strictness;
+
+import static com.example.protechneck.models.PostureEventType.FLAT_PHONE;
+import static com.example.protechneck.models.PostureEventType.LOW_ANGLED;
 
 public class NeckCheckerService extends Service implements SensorEventListener {
 
@@ -22,6 +27,7 @@ public class NeckCheckerService extends Service implements SensorEventListener {
     private Sensor magneticField;
 
     private boolean enabled = false;
+    private final float INITIALISED_PITCH = 0.0F;
 
     public NeckCheckerService() {
         super();
@@ -94,27 +100,35 @@ public class NeckCheckerService extends Service implements SensorEventListener {
      * @param pitch the z axis of the phone in portrait mode
      */
     private void determineAction(float pitch) {
-        if (!enabled && pitch != 0.0) {
+        if (!enabled && pitch != INITIALISED_PITCH) {
             PostureEventType viewType = SensorUtil.determineViewTypeUsingPitch(pitch);
 
-            switch (viewType) {
-                case FLAT_PHONE:
-                case LOW_ANGLED:
-                    startService(viewType);
-                    break;
-                case HIGH_ANGLED:
-                    break;
-                case PERFECT_POSTURE:
-                    break;
-                case NA:
-                    break;
-                default:
-                    break;
+            Strictness strictness = Strictness
+                    .fromValue(PreferencesHelper.getInstance(getApplicationContext()).getPrefAppStrictness());
+
+            if (strictness != null) {
+                switch (strictness) {
+                    case STRICT:
+                        if (viewType.equals(FLAT_PHONE) || viewType.equals(LOW_ANGLED)) {
+                            startApp(viewType);
+                        }
+                        break;
+                    case NOT_SO_STRICT:
+                        if (viewType.equals(FLAT_PHONE)) {
+                            startApp(viewType);
+                        }
+                        break;
+                    case LENIANT:
+                        if (viewType.equals(FLAT_PHONE)) {
+                            startApp(viewType);
+                        }
+                        break;
+                }
             }
         }
     }
 
-    private void startService(PostureEventType viewType) {
+    private void startApp(PostureEventType viewType) {
         Intent intent = new Intent(this, TechNeckActivity.class);
         intent.putExtra("VIEW_TYPE_EXTRA", viewType.toString());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
