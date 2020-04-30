@@ -1,11 +1,13 @@
 package com.example.protechneck.services;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -15,7 +17,7 @@ import com.example.protechneck.models.PostureEventType;
 import com.example.protechneck.ui.TechNeckActivity;
 import com.example.protechneck.util.PreferencesHelper;
 import com.example.protechneck.util.SensorUtil;
-import com.example.protechneck.util.Strictness;
+import com.example.protechneck.models.Strictness;
 
 import static com.example.protechneck.models.PostureEventType.FLAT_PHONE;
 import static com.example.protechneck.models.PostureEventType.LOW_ANGLED;
@@ -26,8 +28,12 @@ public class NeckCheckerService extends Service implements SensorEventListener {
     private Sensor accelerometer;
     private Sensor magneticField;
 
-    private boolean enabled = false;
+    private boolean showing = false;
     private final float INITIALISED_PITCH = 0.0F;
+    private final long TIME_DELAY_STRICT = 10000;
+    private final long TIME_DELAY_NOT_SO_STRICT = 30000;
+    private final long TIME_DELAY_LENIANT = 240000;
+
 
     public NeckCheckerService() {
         super();
@@ -37,6 +43,7 @@ public class NeckCheckerService extends Service implements SensorEventListener {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         initSensors();
+        setResetTimer(getTime());
         validateAndRegisterListener(accelerometer, Sensor.TYPE_ACCELEROMETER);
         validateAndRegisterListener(magneticField, Sensor.TYPE_MAGNETIC_FIELD);
         return START_STICKY;
@@ -100,13 +107,16 @@ public class NeckCheckerService extends Service implements SensorEventListener {
      * @param pitch the z axis of the phone in portrait mode
      */
     private void determineAction(float pitch) {
-        if (!enabled && pitch != INITIALISED_PITCH) {
+        if (!showing && pitch != INITIALISED_PITCH) {
             PostureEventType viewType = SensorUtil.determineViewTypeUsingPitch(pitch);
 
             Strictness strictness = Strictness
                     .fromValue(PreferencesHelper.getInstance(getApplicationContext()).getPrefAppStrictness());
 
-            if (strictness != null) {
+            // TODO add a method call to the if statement to only allow in
+            // if the phone has been at the required angle for a certain time period
+
+            if (strictness != null && PreferencesHelper.getInstance(this).getAllowShow()) {
                 switch (strictness) {
                     case STRICT:
                         if (viewType.equals(FLAT_PHONE) || viewType.equals(LOW_ANGLED)) {
@@ -128,12 +138,34 @@ public class NeckCheckerService extends Service implements SensorEventListener {
         }
     }
 
+    private long getTime() {
+        Strictness strictness = Strictness
+                .fromValue(PreferencesHelper.getInstance(getApplicationContext()).getPrefAppStrictness());
+        if (strictness != null) {
+            switch (strictness) {
+                case STRICT:
+                    return TIME_DELAY_STRICT;
+                case NOT_SO_STRICT:
+                    return TIME_DELAY_NOT_SO_STRICT;
+                case LENIANT:
+                    return TIME_DELAY_LENIANT;
+            }
+        }
+        return TIME_DELAY_STRICT;
+    }
+
+    private void setResetTimer(long time) {
+        final Context context = this;
+        new Handler().postDelayed(() -> PreferencesHelper.getInstance(context).setAllowedToShow(true), time);
+    }
+
     private void startApp(PostureEventType viewType) {
         Intent intent = new Intent(this, TechNeckActivity.class);
         intent.putExtra("VIEW_TYPE_EXTRA", viewType.toString());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        enabled = true;
+        showing = true;
         startActivity(intent);
+        PreferencesHelper.getInstance(this).setAllowedToShow(false);
 
 //          TODO implement notification service
 //            Intent intent = new Intent(getApplicationContext(), NotificationService.class);

@@ -7,6 +7,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.protechneck.models.PostureEventType;
 
 public class SensorUtil {
@@ -16,8 +18,22 @@ public class SensorUtil {
     private static float[] rotationMatrix = new float[9];
     private static float[] orientationAngles = new float[3];
 
-    public SensorUtil() {
+    private static SensorUtil instance;
+    private final Context context;
+
+    private SensorUtil(@NonNull Context context) {
+        this.context = context.getApplicationContext();
     }
+
+    public static SensorUtil getInstance(@NonNull Context context) {
+        synchronized(SensorUtil.class) {
+            if (instance == null) {
+                instance = new SensorUtil(context);
+            }
+            return instance;
+        }
+    }
+
 
     /**
      * @param pitch
@@ -86,10 +102,9 @@ public class SensorUtil {
 
     /**
      * @param serviceClass
-     * @param context
      * @return
      */
-    public static boolean isMyServiceRunning(Class<?> serviceClass, Context context) {
+    public boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
