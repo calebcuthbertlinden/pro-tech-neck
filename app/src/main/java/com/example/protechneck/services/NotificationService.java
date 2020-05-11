@@ -4,13 +4,14 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import androidx.core.app.NotificationCompat;
+
 import com.example.protechneck.R;
-import com.example.protechneck.ui.TechNeckActivity;
+import com.example.protechneck.ui.NeckFeedbackActivity;
+import com.example.protechneck.util.PreferencesHelper;
 
 public class NotificationService extends Service {
 
@@ -20,6 +21,15 @@ public class NotificationService extends Service {
     public static final String ACTION_OPEN = "ACTION_OPEN";
 
     public NotificationService() {
+    }
+
+    public Intent getStartIntent() {
+        Intent intent = new Intent(getApplicationContext(), NotificationService.class);
+        intent.setAction(NotificationService.ACTION_START_FOREGROUND_SERVICE);
+        return intent;
+//        startService(intent);
+//        enabled = SensorUtil.isMyServiceRunning(this.getClass(), this);
+//        stopSelf();
     }
 
     @Override
@@ -36,12 +46,11 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-        if (intent != null) {
-            String action = intent.getAction();
+        String action = intent != null ? intent.getAction() : null;
+        if (action != null) {
             switch (action) {
                 case ACTION_START_FOREGROUND_SERVICE:
-                    if (!pref.getBoolean("TECH_NECK_RUNNING", false)) {
+                    if (!PreferencesHelper.getInstance(getApplicationContext()).isServiceRunning()) {
                         initiateNotification();
                     }
                     break;
@@ -49,7 +58,7 @@ public class NotificationService extends Service {
                     stopForegroundService();
                     break;
                 case ACTION_OPEN:
-                    Intent techNeckIntent = new Intent(this, TechNeckActivity.class);
+                    Intent techNeckIntent = new Intent(this, NeckFeedbackActivity.class);
                     techNeckIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     techNeckIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                     startActivity(techNeckIntent);

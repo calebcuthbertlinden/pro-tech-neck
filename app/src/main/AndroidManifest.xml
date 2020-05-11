@@ -10,40 +10,41 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.TechNeckActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleInstance"
-            android:label="@string/title_activity_tech_neck"
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
+        <activity
+            android:name=".ui.NeckFeedbackActivity"
+            android:label="@string/title_activity_tech_neck"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service
             android:name=".services.NeckCheckerService"
-            android:exported="true"
-            android:enabled="true" >
-        </service>
-
+            android:enabled="true"
+            android:exported="true"></service>
         <service
             android:name=".services.NotificationService"
-            android:exported="true"
-            android:enabled="true" >
-        </service>
+            android:enabled="true"
+            android:exported="true"></service>
 
         <receiver
             android:name=".services.SensorRestartBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
-            android:label="RestartServiceWhenStopped">
-        </receiver>
+            android:label="RestartServiceWhenStopped"></receiver>
     </application>
 
 </manifest>

@@ -1,45 +1,53 @@
 package com.example.protechneck.ui;
 
-import android.content.SharedPreferences;
+import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.example.protechneck.R;
 import com.example.protechneck.models.PostureAnalyticsEvent;
 import com.example.protechneck.models.PostureEventType;
+import com.example.protechneck.models.Strictness;
+import com.example.protechneck.services.NeckCheckerService;
 import com.example.protechneck.util.AnalyticsUtil;
+import com.example.protechneck.util.PreferencesHelper;
 import com.example.protechneck.util.SensorUtil;
 
-public class TechNeckActivity extends AppCompatActivity implements SensorEventListener {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    private TextView postureType;
-    private ConstraintLayout container;
+public class NeckFeedbackActivity extends AppCompatActivity implements SensorEventListener {
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor magneticField;
 
-    private SharedPreferences pref;
+    @BindView(R.id.btn_continue) Button btnFinish;
+    @BindView(R.id.heading) TextView postureType;
+    @BindView(R.id.description) TextView description;
+    @BindView(R.id.container) ConstraintLayout container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tech_neck);
+        ButterKnife.bind(this);
 
-        postureType = findViewById(R.id.posture_type);
-        container = findViewById(R.id.container);
-
-        pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-        updateSharedPref(true);
+        PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(true);
 
         initSensors();
         if (!validateAndRegisterListener(accelerometer, Sensor.TYPE_ACCELEROMETER) &&
@@ -47,6 +55,13 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
             Toast.makeText(this, "This device does not have the necessary hardware to support this application",
                     Toast.LENGTH_LONG).show();
         }
+
+        btnFinish.setOnClickListener(view -> {
+            finish();
+            NeckCheckerService mSensorService = new NeckCheckerService();
+            Intent mServiceIntent = new Intent(this, mSensorService.getClass());
+            this.stopService(mServiceIntent);
+        });
     }
 
     private void initSensors() {
@@ -76,7 +91,7 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
                     SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
             return true;
         } else {
-            SensorUtil.logUnavailableSensor(type);
+            SensorUtil.getInstance(this).logUnavailableSensor(type);
             return false;
         }
     }
@@ -94,35 +109,34 @@ public class TechNeckActivity extends AppCompatActivity implements SensorEventLi
                 // Bad posture
                 AnalyticsUtil.sendAnalyticsEvent(PostureAnalyticsEvent.BAD_POSTURE, null, null);
                 postureType.setText(getString(R.string.posture_type_bad));
-                container.setBackgroundColor(ContextCompat.getColor(this, R.color.badBackground));
+                description.setText(getString(R.string.posture_type_bad_description));
+                container.setBackground(ContextCompat.getDrawable(this, R.drawable.feedback_background_bad));
+                btnFinish.setVisibility(View.GONE);
                 break;
             case LOW_ANGLED:
                 // Bad posture
                 AnalyticsUtil.sendAnalyticsEvent(PostureAnalyticsEvent.OKAY_POSTURE, null, null);
                 postureType.setText(getString(R.string.posture_type_okay));
-                container.setBackgroundColor(ContextCompat.getColor(this, R.color.okayBackground));
+                description.setText(getString(R.string.posture_type_okay_description));
+                container.setBackground(ContextCompat.getDrawable(this, R.drawable.feedback_background_okay));
+                btnFinish.setVisibility(View.GONE);
                 break;
             case PERFECT_POSTURE:
                 // Perfect posture
                 AnalyticsUtil.sendAnalyticsEvent(PostureAnalyticsEvent.PERFECT_POSTURE, null, null);
                 postureType.setText(getString(R.string.posture_type_good));
-                container.setBackgroundColor(ContextCompat.getColor(this, R.color.goodBackground));
+                description.setText(getString(R.string.posture_type_good_description));
+                container.setBackground(ContextCompat.getDrawable(this, R.drawable.feedback_background_good));
+                btnFinish.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
         }
     }
 
-    private void updateSharedPref(boolean isRunning) {
-        pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("TECH_NECK_RUNNING", isRunning);
-        editor.commit();
-    }
-
     @Override
     public void onDestroy() {
-        updateSharedPref(false);
+        PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(false);
         super.onDestroy();
         Log.i("EXIT", "ondestroy!");
     }
