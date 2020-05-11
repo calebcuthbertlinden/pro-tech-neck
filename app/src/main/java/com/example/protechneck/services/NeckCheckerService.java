@@ -29,11 +29,10 @@ public class NeckCheckerService extends Service implements SensorEventListener {
     private Sensor magneticField;
 
     private boolean showing = false;
-    private final float INITIALISED_PITCH = 0.0F;
-    private final long TIME_DELAY_STRICT = 10000;
-    private final long TIME_DELAY_NOT_SO_STRICT = 30000;
-    private final long TIME_DELAY_LENIANT = 240000;
-
+    private final static float INITIALISED_PITCH = 0.0F;
+    private final static long TIME_DELAY_STRICT = 10000;
+    private final static long TIME_DELAY_NOT_SO_STRICT = 30000;
+    private final static long TIME_DELAY_LENIANT = 240000;
 
     public NeckCheckerService() {
         super();
@@ -107,16 +106,13 @@ public class NeckCheckerService extends Service implements SensorEventListener {
      * @param pitch the z axis of the phone in portrait mode
      */
     private void determineAction(float pitch) {
-        if (!showing && pitch != INITIALISED_PITCH) {
+        if (!showing && pitch != INITIALISED_PITCH && PreferencesHelper.getInstance(this).getAllowShow()) {
             PostureEventType viewType = SensorUtil.determineViewTypeUsingPitch(pitch);
 
             Strictness strictness = Strictness
                     .fromValue(PreferencesHelper.getInstance(getApplicationContext()).getPrefAppStrictness());
 
-            // TODO add a method call to the if statement to only allow in
-            // if the phone has been at the required angle for a certain time period
-
-            if (strictness != null && PreferencesHelper.getInstance(this).getAllowShow()) {
+            if (strictness != null) {
                 switch (strictness) {
                     case STRICT:
                         if (viewType.equals(FLAT_PHONE) || viewType.equals(LOW_ANGLED)) {
@@ -151,7 +147,8 @@ public class NeckCheckerService extends Service implements SensorEventListener {
                     return TIME_DELAY_LENIANT;
             }
         }
-        return TIME_DELAY_STRICT;
+        // default to leniant so as to not annoy the user
+        return TIME_DELAY_LENIANT;
     }
 
     private void setResetTimer(long time) {
@@ -166,13 +163,5 @@ public class NeckCheckerService extends Service implements SensorEventListener {
         showing = true;
         startActivity(intent);
         PreferencesHelper.getInstance(this).setAllowedToShow(false);
-
-//          TODO implement notification service
-//            Intent intent = new Intent(getApplicationContext(), NotificationService.class);
-//            intent.setAction(NotificationService.ACTION_START_FOREGROUND_SERVICE);
-//            startService(intent);
-//            enabled = SensorUtil.isMyServiceRunning(this.getClass(), this);
-//            stopSelf();
-
     }
 }
