@@ -1,6 +1,5 @@
 package com.example.protechneck.ui;
 
-import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,7 +19,6 @@ import com.example.protechneck.models.PostureEventType;
 import com.example.protechneck.util.AnalyticsUtil;
 import com.example.protechneck.util.PreferencesHelper;
 import com.example.protechneck.util.SensorUtil;
-
 
 public class TechNeckActivity extends AppCompatActivity implements SensorEventListener {
 

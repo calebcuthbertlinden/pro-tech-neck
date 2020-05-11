@@ -23,6 +23,15 @@ public class NotificationService extends Service {
     public NotificationService() {
     }
 
+    public Intent getStartIntent() {
+        Intent intent = new Intent(getApplicationContext(), NotificationService.class);
+        intent.setAction(NotificationService.ACTION_START_FOREGROUND_SERVICE);
+        return intent;
+//        startService(intent);
+//        enabled = SensorUtil.isMyServiceRunning(this.getClass(), this);
+//        stopSelf();
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.

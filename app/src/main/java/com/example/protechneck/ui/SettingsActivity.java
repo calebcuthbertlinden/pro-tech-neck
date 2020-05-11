@@ -48,9 +48,9 @@ public class SettingsActivity extends AppCompatActivity {
         if (!SensorUtil.getInstance(this).isMyServiceRunning(mSensorService.getClass())) {
             startService(mServiceIntent);
         }
-        PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(false);
         // close app and start service
         this.startService(mServiceIntent);
+        PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(false);
         PreferencesHelper.getInstance(getApplicationContext()).setIsReturningUserPreference();
         PreferencesHelper.getInstance(getApplicationContext()).setAppStrictnessPreference(strictnessChosen);
         finish();
