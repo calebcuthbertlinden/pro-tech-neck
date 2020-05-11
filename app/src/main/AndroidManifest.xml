@@ -14,7 +14,7 @@
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".ui.TechNeckActivity"
+            android:name=".ui.NeckFeedbackActivity"
             android:label="@string/title_activity_tech_neck"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"

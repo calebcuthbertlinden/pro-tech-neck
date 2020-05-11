@@ -14,10 +14,10 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.protechneck.models.PostureEventType;
-import com.example.protechneck.ui.TechNeckActivity;
+import com.example.protechneck.models.Strictness;
+import com.example.protechneck.ui.NeckFeedbackActivity;
 import com.example.protechneck.util.PreferencesHelper;
 import com.example.protechneck.util.SensorUtil;
-import com.example.protechneck.models.Strictness;
 
 import static com.example.protechneck.models.PostureEventType.FLAT_PHONE;
 import static com.example.protechneck.models.PostureEventType.LOW_ANGLED;
@@ -94,7 +94,7 @@ public class NeckCheckerService extends Service implements SensorEventListener {
             sensorManager.registerListener(this, sensor,
                     SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
         } else {
-            SensorUtil.logUnavailableSensor(type);
+            SensorUtil.getInstance(this).logUnavailableSensor(type);
         }
     }
 
@@ -134,6 +134,15 @@ public class NeckCheckerService extends Service implements SensorEventListener {
         }
     }
 
+    private void startApp(PostureEventType viewType) {
+        Intent intent = new Intent(this, NeckFeedbackActivity.class);
+        intent.putExtra("VIEW_TYPE_EXTRA", viewType.toString());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        showing = true;
+        startActivity(intent);
+        PreferencesHelper.getInstance(this).setAllowedToShow(false);
+    }
+
     private long getTime() {
         Strictness strictness = Strictness
                 .fromValue(PreferencesHelper.getInstance(getApplicationContext()).getPrefAppStrictness());
@@ -154,14 +163,5 @@ public class NeckCheckerService extends Service implements SensorEventListener {
     private void setResetTimer(long time) {
         final Context context = this;
         new Handler().postDelayed(() -> PreferencesHelper.getInstance(context).setAllowedToShow(true), time);
-    }
-
-    private void startApp(PostureEventType viewType) {
-        Intent intent = new Intent(this, TechNeckActivity.class);
-        intent.putExtra("VIEW_TYPE_EXTRA", viewType.toString());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        showing = true;
-        startActivity(intent);
-        PreferencesHelper.getInstance(this).setAllowedToShow(false);
     }
 }

@@ -10,7 +10,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.example.protechneck.R;
-import com.example.protechneck.ui.TechNeckActivity;
+import com.example.protechneck.ui.NeckFeedbackActivity;
 import com.example.protechneck.util.PreferencesHelper;
 
 public class NotificationService extends Service {
@@ -58,7 +58,7 @@ public class NotificationService extends Service {
                     stopForegroundService();
                     break;
                 case ACTION_OPEN:
-                    Intent techNeckIntent = new Intent(this, TechNeckActivity.class);
+                    Intent techNeckIntent = new Intent(this, NeckFeedbackActivity.class);
                     techNeckIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     techNeckIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                     startActivity(techNeckIntent);

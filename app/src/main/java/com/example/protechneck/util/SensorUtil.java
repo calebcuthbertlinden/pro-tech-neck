@@ -6,6 +6,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -86,15 +87,18 @@ public class SensorUtil {
     /**
      * @param type
      */
-    public static void logUnavailableSensor(int type) {
+    public void logUnavailableSensor(int type) {
         switch (type) {
             case Sensor.TYPE_ACCELEROMETER:
+                Toast.makeText(context, "No Accelerometer available on this device", Toast.LENGTH_LONG).show();
                 Log.e("", "No Accelerometer available on this device");
                 break;
             case Sensor.TYPE_GYROSCOPE:
+                Toast.makeText(context, "No Gyroscope available on this device", Toast.LENGTH_LONG).show();
                 Log.e("", "No Gyroscope available on this device");
                 break;
             case Sensor.TYPE_MAGNETIC_FIELD:
+                Toast.makeText(context, "No [*] available on this device", Toast.LENGTH_LONG).show();
                 Log.e("", "No [*] available on this device");
                 break;
         }

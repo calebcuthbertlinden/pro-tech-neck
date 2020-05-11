@@ -1,4 +1,4 @@
-package com.example.protechneck.ui;
+package com.example.protechneck.ui.onboarding;
 
 import android.os.Parcel;
 import android.os.Parcelable;
