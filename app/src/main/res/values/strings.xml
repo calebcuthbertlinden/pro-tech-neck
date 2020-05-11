@@ -16,9 +16,12 @@
     <string name="tech_neck_description">Helping you avoid neck strain.</string>
     <string name="title_activity_tech_neck" tools:ignore="ExtraTranslation">TechNeckActivity</string>
 
-    <string name="posture_type_bad">Bad posture</string>
-    <string name="posture_type_okay">Okay posture</string>
-    <string name="posture_type_good">Good posture</string>
+    <string name="posture_type_bad">Lift your phone up!</string>
+    <string name="posture_type_okay">Becareful</string>
+    <string name="posture_type_good">Good job. As you were</string>
+    <string name="posture_type_bad_description">You are currently either looking directly down at your phone, or can’t see anything on the screen. Doing this for extended period will lead to neck strain.</string>
+    <string name="posture_type_okay_description">Ensure you don’t fall into bad habits. Lift your phone up to eye level, you are almost there.</string>
+    <string name="posture_type_good_description">This is exactly where you want to be, keep it up.</string>
 
     <!-- ONBOARDING -->
     <string name="app_title">Protek Neck</string>

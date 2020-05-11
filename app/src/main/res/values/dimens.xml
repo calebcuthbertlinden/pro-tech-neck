@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="base_margin">8dp</dimen>
-    <dimen name="gutterSpaceDouble">16dp</dimen>
+    <dimen name="gutterSpaceHalf">8dp</dimen>
+    <dimen name="gutterSpace">16dp</dimen>
+    <dimen name="gutterSpaceDouble">32dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="onboarding_image_width">140dp</dimen>
     <dimen name="radio_button_width">100dp</dimen>
