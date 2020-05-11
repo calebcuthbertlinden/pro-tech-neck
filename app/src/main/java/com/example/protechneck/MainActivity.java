@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.protechneck.services.NeckCheckerService;
-import com.example.protechneck.ui.OnboardingModel;
-import com.example.protechneck.ui.OnboardingViewpagerAdapter;
+import com.example.protechneck.ui.onboarding.OnboardingModel;
+import com.example.protechneck.ui.onboarding.OnboardingViewpagerAdapter;
 import com.example.protechneck.ui.SettingsActivity;
 import com.example.protechneck.util.PreferencesHelper;
 import com.example.protechneck.util.SensorUtil;
@@ -48,11 +48,10 @@ public class MainActivity extends AppCompatActivity {
             NeckCheckerService mSensorService = new NeckCheckerService();
             mServiceIntent = new Intent(this, mSensorService.getClass());
             if (!SensorUtil.getInstance(this).isMyServiceRunning(mSensorService.getClass())) {
-                startService(mServiceIntent);
+                PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(false);
+                // close app and start service
+                this.startService(mServiceIntent);
             }
-            PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(false);
-            // close app and start service
-            this.startService(mServiceIntent);
             finish();
         } else {
             setupOnboarding();

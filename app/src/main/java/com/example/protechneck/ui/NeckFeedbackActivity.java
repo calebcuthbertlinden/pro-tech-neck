@@ -20,7 +20,7 @@ import com.example.protechneck.util.AnalyticsUtil;
 import com.example.protechneck.util.PreferencesHelper;
 import com.example.protechneck.util.SensorUtil;
 
-public class TechNeckActivity extends AppCompatActivity implements SensorEventListener {
+public class NeckFeedbackActivity extends AppCompatActivity implements SensorEventListener {
 
     private TextView postureType;
     private ConstraintLayout container;

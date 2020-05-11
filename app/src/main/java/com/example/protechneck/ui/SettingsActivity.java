@@ -43,16 +43,14 @@ public class SettingsActivity extends AppCompatActivity {
     @OnClick(R.id.btn_continue)
     public void onContinueClick(View view) {
         // TODO this code will sit here until next ticket implemented
-        NeckCheckerService mSensorService = new NeckCheckerService();
-        mServiceIntent = new Intent(this, mSensorService.getClass());
-        if (!SensorUtil.getInstance(this).isMyServiceRunning(mSensorService.getClass())) {
-            startService(mServiceIntent);
-        }
-        // close app and start service
-        this.startService(mServiceIntent);
+
         PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(false);
         PreferencesHelper.getInstance(getApplicationContext()).setIsReturningUserPreference();
         PreferencesHelper.getInstance(getApplicationContext()).setAppStrictnessPreference(strictnessChosen);
+        // close app and start service
+        NeckCheckerService mSensorService = new NeckCheckerService();
+        mServiceIntent = new Intent(this, mSensorService.getClass());
+        this.startService(mServiceIntent);
         finish();
     }
 

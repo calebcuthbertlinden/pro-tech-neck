@@ -1,4 +1,4 @@
-package com.example.protechneck.ui;
+package com.example.protechneck.ui.onboarding;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

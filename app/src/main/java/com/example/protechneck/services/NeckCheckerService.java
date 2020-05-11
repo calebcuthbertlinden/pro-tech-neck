@@ -14,7 +14,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.protechneck.models.PostureEventType;
-import com.example.protechneck.ui.TechNeckActivity;
+import com.example.protechneck.ui.NeckFeedbackActivity;
 import com.example.protechneck.util.PreferencesHelper;
 import com.example.protechneck.util.SensorUtil;
 import com.example.protechneck.models.Strictness;
@@ -157,7 +157,7 @@ public class NeckCheckerService extends Service implements SensorEventListener {
     }
 
     private void startApp(PostureEventType viewType) {
-        Intent intent = new Intent(this, TechNeckActivity.class);
+        Intent intent = new Intent(this, NeckFeedbackActivity.class);
         intent.putExtra("VIEW_TYPE_EXTRA", viewType.toString());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         showing = true;
