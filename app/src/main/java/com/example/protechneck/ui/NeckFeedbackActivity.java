@@ -74,7 +74,7 @@ public class NeckFeedbackActivity extends AppCompatActivity implements SensorEve
                     SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
             return true;
         } else {
-            SensorUtil.logUnavailableSensor(type);
+            SensorUtil.getInstance(this).logUnavailableSensor(type);
             return false;
         }
     }

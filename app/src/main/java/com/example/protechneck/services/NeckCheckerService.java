@@ -94,7 +94,7 @@ public class NeckCheckerService extends Service implements SensorEventListener {
             sensorManager.registerListener(this, sensor,
                     SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
         } else {
-            SensorUtil.logUnavailableSensor(type);
+            SensorUtil.getInstance(this).logUnavailableSensor(type);
         }
     }
 
