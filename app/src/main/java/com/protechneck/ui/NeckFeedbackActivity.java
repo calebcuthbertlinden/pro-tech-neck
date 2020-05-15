@@ -1,16 +1,13 @@
-package com.example.protechneck.ui;
+package com.protechneck.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,14 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-import com.example.protechneck.R;
-import com.example.protechneck.models.PostureAnalyticsEvent;
-import com.example.protechneck.models.PostureEventType;
-import com.example.protechneck.models.Strictness;
-import com.example.protechneck.services.NeckCheckerService;
-import com.example.protechneck.util.AnalyticsUtil;
-import com.example.protechneck.util.PreferencesHelper;
-import com.example.protechneck.util.SensorUtil;
+import protechneck.R;
+import com.protechneck.models.PostureAnalyticsEvent;
+import com.protechneck.models.PostureEventType;
+import com.protechneck.services.NeckCheckerService;
+import com.protechneck.util.AnalyticsUtil;
+import com.protechneck.util.PreferencesHelper;
+import com.protechneck.util.SensorUtil;
+import com.google.android.material.button.MaterialButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +33,7 @@ public class NeckFeedbackActivity extends AppCompatActivity implements SensorEve
     private Sensor accelerometer;
     private Sensor magneticField;
 
-    @BindView(R.id.btn_continue) Button btnFinish;
+    @BindView(R.id.btn_continue) MaterialButton btnFinish;
     @BindView(R.id.heading) TextView postureType;
     @BindView(R.id.description) TextView description;
     @BindView(R.id.container) ConstraintLayout container;

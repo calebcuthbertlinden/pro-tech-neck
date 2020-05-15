@@ -1,4 +1,4 @@
-package com.example.protechneck.services;
+package com.protechneck.services;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -9,9 +9,9 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-import com.example.protechneck.R;
-import com.example.protechneck.ui.NeckFeedbackActivity;
-import com.example.protechneck.util.PreferencesHelper;
+import protechneck.R;
+import com.protechneck.ui.NeckFeedbackActivity;
+import com.protechneck.util.PreferencesHelper;
 
 public class NotificationService extends Service {
 

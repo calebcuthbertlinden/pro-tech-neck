@@ -1,4 +1,4 @@
-package com.example.protechneck.services;
+package com.protechneck.services;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

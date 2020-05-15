@@ -1,4 +1,4 @@
-package com.example.protechneck.services;
+package com.protechneck.services;
 
 import android.app.Service;
 import android.content.Context;
@@ -13,14 +13,14 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.protechneck.models.PostureEventType;
-import com.example.protechneck.models.Strictness;
-import com.example.protechneck.ui.NeckFeedbackActivity;
-import com.example.protechneck.util.PreferencesHelper;
-import com.example.protechneck.util.SensorUtil;
+import com.protechneck.models.PostureEventType;
+import com.protechneck.models.Strictness;
+import com.protechneck.ui.NeckFeedbackActivity;
+import com.protechneck.util.PreferencesHelper;
+import com.protechneck.util.SensorUtil;
 
-import static com.example.protechneck.models.PostureEventType.FLAT_PHONE;
-import static com.example.protechneck.models.PostureEventType.LOW_ANGLED;
+import static com.protechneck.models.PostureEventType.FLAT_PHONE;
+import static com.protechneck.models.PostureEventType.LOW_ANGLED;
 
 public class NeckCheckerService extends Service implements SensorEventListener {
 

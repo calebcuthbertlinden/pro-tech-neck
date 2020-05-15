@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.protechneck.MainActivity">
+    tools:context="protechneck.MainActivity">
 
     <LinearLayout
         android:paddingTop="64dp"
@@ -61,15 +61,14 @@
             app:ipi_pageIndicatorColor="@color/cardview_dark_background"
             android:paddingBottom="@dimen/gutterSpaceDouble"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/done_button"
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            style="@style/Widget.AppCompat.Button"
-            android:text="@string/get_started"/>
+            android:text="@string/get_started"
+            style="@style/Protek.Neck.Button.Primary"/>
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

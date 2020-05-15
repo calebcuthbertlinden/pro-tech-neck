@@ -7,4 +7,5 @@
     <color name="goodBackground">#277E50</color>
     <color name="okayBackground">#FEA310</color>
     <color name="badBackground">#E85C53</color>
+    <color name="colorAccentPressed">#FFB830</color>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.protechneck.util;
+package com.protechneck.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

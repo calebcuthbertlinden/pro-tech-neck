@@ -1,19 +1,17 @@
-package com.example.protechneck.ui;
+package com.protechneck.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.protechneck.R;
-import com.example.protechneck.services.NeckCheckerService;
-import com.example.protechneck.util.PreferencesHelper;
-import com.example.protechneck.util.SensorUtil;
-import com.example.protechneck.models.Strictness;
+import protechneck.R;
+import com.protechneck.services.NeckCheckerService;
+import com.protechneck.util.PreferencesHelper;
+import com.protechneck.models.Strictness;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,14 +23,32 @@ public class SettingsActivity extends AppCompatActivity {
 
     private String strictnessChosen;
 
-    @BindView(R.id.strictness) RadioGroup strictness;
+    @BindView(R.id.strictness) MaterialButtonToggleGroup strictness;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings2);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
+        strictness.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            switch(checkedId) {
+                case R.id.strict:
+                    if (isChecked)
+                        strictnessChosen = Strictness.STRICT.name();
+                    break;
+                case R.id.not_so_strict:
+                    if (isChecked)
+                        strictnessChosen = Strictness.NOT_SO_STRICT.name();
+                    break;
+                case R.id.leniant:
+                    if (isChecked)
+                        strictnessChosen = Strictness.LENIANT.name();
+                    break;
+            }
+        });
     }
 
     protected void onResume() {
@@ -52,26 +68,5 @@ public class SettingsActivity extends AppCompatActivity {
         mServiceIntent = new Intent(this, mSensorService.getClass());
         this.startService(mServiceIntent);
         finish();
-    }
-
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.strict:
-                if (checked)
-                    strictnessChosen = Strictness.STRICT.name();
-                    break;
-            case R.id.not_so_strict:
-                if (checked)
-                    strictnessChosen = Strictness.NOT_SO_STRICT.name();
-                    break;
-            case R.id.leniant:
-                if (checked)
-                    strictnessChosen = Strictness.LENIANT.name();
-                    break;
-        }
     }
 }

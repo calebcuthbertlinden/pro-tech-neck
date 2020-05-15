@@ -1,4 +1,4 @@
-package com.example.protechneck.ui.onboarding;
+package com.protechneck.ui.onboarding;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.protechneck.R;
+import protechneck.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

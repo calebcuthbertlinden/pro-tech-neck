@@ -1,4 +1,4 @@
-package com.example.protechneck.models;
+package com.protechneck.models;
 
 /**
  * This enum specifies the types of posture events exist according to the orientation and angle of the device

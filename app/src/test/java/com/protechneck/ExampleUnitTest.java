@@ -1,4 +1,4 @@
-package com.example.protechneck;
+package com.protechneck;
 
 import org.junit.Test;
 

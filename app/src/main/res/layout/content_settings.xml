@@ -76,58 +76,39 @@
                 android:text="@string/settings_strictness_description"
                 android:textSize="14sp" />
 
-
-            <RadioGroup
+            <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/strictness"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/gutterSpace"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
                     android:id="@+id/strict"
-                    android:padding="@dimen/gutterSpaceHalf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/radio_flat_text_selector"
-                    android:background="@drawable/radio_flat_selector"
                     android:text="@string/settings_very_strict"
-                    android:button="@null"
-                    android:onClick="onRadioButtonClicked" />
-
-                <RadioButton
+                    style="?attr/materialButtonOutlinedStyle"
+                    />
+                <Button
                     android:id="@+id/not_so_strict"
-                    android:padding="@dimen/gutterSpaceHalf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/radio_flat_text_selector"
-                    android:background="@drawable/radio_flat_selector"
                     android:text="@string/settings_not_so_strict"
-                    android:button="@null"
-                    android:onClick="onRadioButtonClicked" />
-
-                <RadioButton
+                    style="?attr/materialButtonOutlinedStyle"
+                    />
+                <Button
                     android:id="@+id/leniant"
-                    android:padding="@dimen/gutterSpaceHalf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/radio_flat_text_selector"
-                    android:background="@drawable/radio_flat_selector"
                     android:text="@string/settings_leniant"
-                    android:button="@null"
-                    android:onClick="onRadioButtonClicked" />
-            </RadioGroup>
+                    style="?attr/materialButtonOutlinedStyle"
+                    />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
-
-            <Button
-                android:layout_gravity="center"
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_continue"
+                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                style="@style/Widget.AppCompat.Button"
-                android:text="@string/btn_continue"/>
+                android:text="@string/btn_continue" />
 
         </LinearLayout>
     </ScrollView>

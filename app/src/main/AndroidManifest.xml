@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.protechneck">
+    package="protechneck">
 
     <application
         android:allowBackup="true"
@@ -10,19 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name="com.protechneck.ui.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/Theme.MaterialComponents.NoActionBar"></activity>
         <activity
-            android:name=".ui.NeckFeedbackActivity"
+            android:name="com.protechneck.ui.NeckFeedbackActivity"
             android:label="@string/title_activity_tech_neck"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/Theme.MaterialComponents.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.protechneck.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/Theme.MaterialComponents.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -32,16 +32,16 @@
         </activity>
 
         <service
-            android:name=".services.NeckCheckerService"
+            android:name="com.protechneck.services.NeckCheckerService"
             android:enabled="true"
             android:exported="true"></service>
         <service
-            android:name=".services.NotificationService"
+            android:name="com.protechneck.services.NotificationService"
             android:enabled="true"
             android:exported="true"></service>
 
         <receiver
-            android:name=".services.SensorRestartBroadcastReceiver"
+            android:name="com.protechneck.services.SensorRestartBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
             android:label="RestartServiceWhenStopped"></receiver>

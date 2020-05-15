@@ -1,4 +1,4 @@
-package com.example.protechneck.ui.onboarding;
+package com.protechneck.ui.onboarding;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

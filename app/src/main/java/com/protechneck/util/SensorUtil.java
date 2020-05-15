@@ -1,4 +1,4 @@
-package com.example.protechneck.util;
+package com.protechneck.util;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.protechneck.models.PostureEventType;
+import com.protechneck.models.PostureEventType;
 
 public class SensorUtil {
 

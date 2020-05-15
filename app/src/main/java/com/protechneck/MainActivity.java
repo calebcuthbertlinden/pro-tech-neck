@@ -1,19 +1,19 @@
-package com.example.protechneck;
+package com.protechneck;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.protechneck.services.NeckCheckerService;
-import com.example.protechneck.ui.onboarding.OnboardingModel;
-import com.example.protechneck.ui.onboarding.OnboardingViewpagerAdapter;
-import com.example.protechneck.ui.SettingsActivity;
-import com.example.protechneck.util.PreferencesHelper;
-import com.example.protechneck.util.SensorUtil;
+import com.protechneck.services.NeckCheckerService;
+import com.protechneck.ui.onboarding.OnboardingModel;
+import com.protechneck.ui.onboarding.OnboardingViewpagerAdapter;
+import com.protechneck.ui.SettingsActivity;
+import com.protechneck.util.PreferencesHelper;
+import com.protechneck.util.SensorUtil;
+
 import com.pixelcan.inkpageindicator.InkPageIndicator;
 
 import java.util.ArrayList;
@@ -22,6 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import protechneck.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.onboarding_pager) ViewPager viewPager;
     @BindView(R.id.onboarding_indicator) InkPageIndicator indicator;
-    @BindView(R.id.done_button) Button nextButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.done_button)
     public void onGetStartedClick(View view) {
         this.startActivity(new Intent(this, SettingsActivity.class));
+        finish();
     }
 
     protected void onStop() {

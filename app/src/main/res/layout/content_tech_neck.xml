@@ -44,17 +44,15 @@
         android:textAlignment="center"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <Button
-        android:layout_gravity="center"
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_continue"
+        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        style="@style/Widget.AppCompat.Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="@dimen/gutterSpaceDouble"
-        android:text="@string/btn_continue"/>
+        android:text="@string/btn_continue" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

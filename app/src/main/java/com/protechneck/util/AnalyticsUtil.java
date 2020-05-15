@@ -1,6 +1,6 @@
-package com.example.protechneck.util;
+package com.protechneck.util;
 
-import com.example.protechneck.models.PostureAnalyticsEvent;
+import com.protechneck.models.PostureAnalyticsEvent;
 
 public class AnalyticsUtil {
 
