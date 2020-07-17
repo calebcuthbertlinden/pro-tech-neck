@@ -26,7 +26,8 @@
                 android:paddingRight="@dimen/gutterSpace"
                 android:paddingTop="@dimen/gutterSpace"
                 android:text="@string/settings_background_permission"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -35,30 +36,35 @@
                 android:text="@string/settings_background_permission_description"
                 android:textSize="14sp" />
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="@dimen/gutterSpace">
 
                 <TextView
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_allow"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
 
                 <CheckBox
-                    android:layout_alignParentEnd="true"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true" />
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/cardview_dark_background"
-                android:backgroundTint="#000000" />
+                android:backgroundTint="#666666" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -67,6 +73,7 @@
                 android:paddingRight="@dimen/gutterSpace"
                 android:paddingTop="@dimen/gutterSpace"
                 android:text="@string/settings_strictness"
+                android:textStyle="bold"
                 android:textSize="18sp" />
 
             <TextView
@@ -76,41 +83,57 @@
                 android:text="@string/settings_strictness_description"
                 android:textSize="14sp" />
 
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/strictness"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <Button
-                    android:id="@+id/strict"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_very_strict"
-                    style="?attr/materialButtonOutlinedStyle"
-                    />
-                <Button
-                    android:id="@+id/not_so_strict"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_not_so_strict"
-                    style="?attr/materialButtonOutlinedStyle"
-                    />
-                <Button
-                    android:id="@+id/leniant"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_leniant"
-                    style="?attr/materialButtonOutlinedStyle"
-                    />
-            </com.google.android.material.button.MaterialButtonToggleGroup>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_continue"
-                android:gravity="center"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_continue" />
+                android:orientation="vertical">
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/strictness"
+                    android:layout_width="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_height="wrap_content"
+                    app:selectionRequired="true"
+                    app:singleSelection="true"
+                    android:padding="@dimen/gutterSpace">
+                    <Button
+                        android:id="@+id/strict"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_very_strict"
+                        style="?attr/materialButtonOutlinedStyle"
+                        />
+                    <Button
+                        android:id="@+id/not_so_strict"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_not_so_strict"
+                        style="?attr/materialButtonOutlinedStyle"
+                        />
+                    <Button
+                        android:id="@+id/leniant"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_leniant"
+                        style="?attr/materialButtonOutlinedStyle"
+                        />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
     </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/btn_continue"
+        android:gravity="center"
+        android:padding="@dimen/gutterSpace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_continue" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

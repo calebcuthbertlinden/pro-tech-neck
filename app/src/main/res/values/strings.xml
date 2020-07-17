@@ -38,12 +38,12 @@
     <!-- SETTINGS -->
     <string name="settings_allow">I allow this</string>
     <string name="settings_background_permission">Background permission</string>
-    <string name="settings_background_permission_description">In order for this to work, you have to allow the aoo to run in the bacjground. This is the only way it can pick up your posture</string>
+    <string name="settings_background_permission_description">In order for this to work, you have to allow the app to run in the bacjground. This is the only way it can pick up your posture</string>
     <string name="settings_strictness">Strictness</string>
     <string name="settings_strictness_description">These settings determine how strict the app is. We understand this app can be intrusive, so it is up to you just how intrusive it is</string>
     <string name="settings_very_strict">Very strict</string>
     <string name="settings_not_so_strict">Not so strict</string>
     <string name="settings_leniant">Leniant</string>
-
+    <string name="loading">Loading</string>
 
 </resources>

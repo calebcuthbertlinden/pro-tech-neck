@@ -14,6 +14,10 @@
             android:label="@string/title_activity_settings"
             android:theme="@style/Theme.MaterialComponents.NoActionBar"></activity>
         <activity
+            android:name="com.protechneck.ui.TransitionActivity"
+            android:label="@string/loading"
+            android:theme="@style/Theme.MaterialComponents.NoActionBar"></activity>
+        <activity
             android:name="com.protechneck.ui.NeckFeedbackActivity"
             android:label="@string/title_activity_tech_neck"
             android:launchMode="singleInstance"

@@ -19,8 +19,6 @@ import butterknife.OnClick;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    Intent mServiceIntent;
-
     private String strictnessChosen;
 
     @BindView(R.id.strictness) MaterialButtonToggleGroup strictness;
@@ -63,10 +61,8 @@ public class SettingsActivity extends AppCompatActivity {
         PreferencesHelper.getInstance(getApplicationContext()).setAppServiceRunningPreference(false);
         PreferencesHelper.getInstance(getApplicationContext()).setIsReturningUserPreference();
         PreferencesHelper.getInstance(getApplicationContext()).setAppStrictnessPreference(strictnessChosen);
-        // close app and start service
-        NeckCheckerService mSensorService = new NeckCheckerService();
-        mServiceIntent = new Intent(this, mSensorService.getClass());
-        this.startService(mServiceIntent);
+
+        startActivity(new Intent(this, TransitionActivity.class));
         finish();
     }
 }
